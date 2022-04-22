@@ -43,7 +43,7 @@ function Q4(props) {
     
     return (
         <div className="App">
-            <Header />
+            <Header history={props.history}/>
             <div className='Content'>
                 <h3 className='page'>{ QnA.page }</h3> 
                 <h1 className='question'>{ QnA.Question }</h1>

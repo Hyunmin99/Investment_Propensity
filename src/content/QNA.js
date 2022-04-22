@@ -7,7 +7,7 @@ const QNA = [
         Answers: [
             {
             id: 1, 
-            Answer: "단기 목표: 학자금, 여행 등을 위한 자금 마련", 
+            Answer: "단기 목표: 소비, 여행 등을 위한 자금 마련", 
             Value: 1,
             State: false
             },

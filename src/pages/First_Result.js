@@ -119,7 +119,7 @@ function First_Result(props) {
 
   return (
     <div className="App">
-      <Header />
+      <Header history={props.history}/>
       <div className='Result'> 
         <div> 
           <div> 

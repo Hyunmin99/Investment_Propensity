@@ -39,7 +39,7 @@ const TYPE = [ //id, Char, Min, Max, Revenue, Content, Img
         id: 5,
         Char: '적극투자 Type2 캐릭터',
         Min: -6,
-        Max: 8,
+        Max: 12,
         Revenue: 6,
         Content: '적극투자형 중에서 가장 일반적인 유형이에요. 적극투자형은 높은 투자 수익에 따른 투자 위험이 있음을 충분히 인식해요. 예금, 적금보다 높은 수익을 낼 수 있다면, 손실 위험을 감수해요.',
         Img: ''

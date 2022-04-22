@@ -55,10 +55,8 @@ function Graph({ P, A, Min, Max, Rev }) {
         return obj;
     }
 
-    //적립식 단리 계산
-
     //적립식 복리 계산
-
+    //답업워
 
     //데이터 세팅
     const data = year.map(function(t){
@@ -68,7 +66,7 @@ function Graph({ P, A, Min, Max, Rev }) {
     return (
         <div>
             <p>{covMoney}, {covUnits}</p>
-            <p>{Min}, {Max}, {Rev} {(Min/100+1)}</p>
+            <p>{Min}, {Max}, {Rev}</p>
             <ComposedChart width={400} height={250} margin={{top: 20, bottom: 20}} data={data}>
                 <XAxis dataKey="year" tick={{fontSize: 10}} padding={{right: 20}}/>
                 <YAxis unit={covUnits} tick={{fontSize: 10}} padding={{bottom: 10}} />

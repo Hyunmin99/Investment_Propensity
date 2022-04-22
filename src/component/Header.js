@@ -1,35 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
 
-function Header() {
+function Header({history}) {
+    const mounted = useRef(false);
+    const [isBlocking, setISBlocking] = useState(false);
 
-    const Res = {
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false,
-        6: false,
-        7: false,
-        8: false,
-        9: false,
-        10: false,
-        11: false,
-        12: false,
-        13: false,
-        14: false,
-        15: false,
-        16: false,
-        17: false,
-        18: false
-      }
+    const onClick = () => {
+        setISBlocking(true);
+    };
+
+    useEffect(() => {
+        console.log(history);
+
+        history.block((location, action) => {
+            console.log('#### history block', isBlocking, action, location);
+            if(isBlocking && action === 'POP') {
+                console.log('#### blocked ####');
+                return false;
+            }
+        });
+        // const unblock = history.block("처음 화면으로 돌아가시겠어요? 🥲");
+        // return () => {unblock();}
+    }, [isBlocking]);
 
     return (
         <div>
-            <div className="Header">
-                <Link to={{pathname: "/", state: {Res: Res}} }style={{textDecoration: 'none', color: 'inherit'}}>
-                    <div>투자 유니버스</div>
-                </Link>
+            <div className="Header" onClick={onClick}>
+                <div>투자 유니버스</div>
             </div>
         </div>
     );

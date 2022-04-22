@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
+// import { useHistory } from 'react-router-dom';
 import '../App.css';
 import Header from '../component/Header';
 import NextButton from '../component/NextButton';
@@ -7,6 +8,17 @@ import QNA from '../content/QNA'
 const QnA = QNA[0];
 
 function Q1(props) {
+
+  // const history = useHistory();
+
+  // useEffect(() => {
+  //   let unlisten = history.listen((location) => {
+  //     if (history.action === 'PUSH') {
+  //     }
+  //     if(history.action === 'POP'){
+  //     }
+  //   })
+  // });
 
   const Res = props.location.state.Res;
 
@@ -36,7 +48,7 @@ function Q1(props) {
   
   return (
     <div className="App">
-      <Header />
+      <Header history={props.history}/>
       <div className='Content'>
         <h3 className='page'>{ QnA.page }</h3> 
         <h1 className='question'> { QnA.Question }</h1>
