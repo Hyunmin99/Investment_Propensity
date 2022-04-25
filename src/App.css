@@ -75,6 +75,7 @@ body{
 
 .Header {
   background: var(--white000);
+  cursor: pointer;
   text-align: center;
   /* width: 100%; */
   width: 540px;
@@ -296,6 +297,28 @@ body{
 
 .Column {
   margin: 0 auto;
+}
+
+.tableStyle {
+  width: 100%;
+  text-align: center;
+}
+
+.Row {
+  /* clear: left; */
+  margin: 0 auto;
+  padding: 0;
+  /* margin: 0;
+  padding: 0; */
+  list-style-type: none;
+  width: 80%;
+}
+
+.ColumnValue {
+  display: inline-block;
+  width: 50%;
+  text-align: center;
+
 }
 
 @media screen and (max-width: 540px){

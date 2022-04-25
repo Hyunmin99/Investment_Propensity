@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useHistory } from 'react-router-dom';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ScrollToTop from './component/ScrollToTop';
 // import './App.css';
@@ -23,8 +24,16 @@ import Q16 from './pages/Q16';
 import Q17 from './pages/Q17';
 import Q18 from './pages/Q18';
 import Final_Result from './pages/Final_Result';
+import Test from './pages/Test';
 
 function App() {
+  let history = useHistory();
+
+  useEffect(() => {
+    window.onpopstate = function () {
+      history.go(1);
+    };
+  }, []);
 
   return (
     <div className="App">
@@ -52,6 +61,7 @@ function App() {
             <Route exact path="/q17" component={Q17} />
             <Route exact path="/q18" component={Q18} />
             <Route exact path="/result" component={Final_Result} />
+            <Route exact path="/t" component={Test} />
           </ScrollToTop>
         </Switch>
       </Router>

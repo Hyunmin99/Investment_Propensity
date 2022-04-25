@@ -54,11 +54,11 @@ function Start() {
       <div className='Start'>
         <div style={{fontSize: '0.9rem', fontWeight: '400', marginBottom:'0.3rem'}}>돈 쓸어담기 1단계</div>
         <div style={{fontSize: '1.2rem', fontWeight: '700'}}>나의 투자 성향 확인하기</div>
-        {/* <h1>투자 성향에 맞는 캐릭터를 만들어드려요 ^^*</h1> */}
         <div className='Intro'><div className='Typo'>투자 성향<br/>테스트</div></div>
-        <h5 style={{marginBottom: '0'}}>Press button to start</h5>
+        {/* <h5 style={{marginBottom: '0'}}>Press button to start</h5> */}
         <NextButton Path={"/q1"} Res={Res} Text={'테스트 시작하기'}/>
         <NextButton Path={"/result"} Res={dummy_Res} Text={'결과로 바로 이동'}/> 
+        {/* <NextButton Path={"/t"} Res={dummy_Res} Text={'테스트 페이지'}/>  */}
       </div>
     </div>
   );

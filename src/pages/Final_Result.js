@@ -189,64 +189,72 @@ function Final_Result(props) {
 
     return (
         <div className="App">
-        <Header history={props.history}/>
-        <div className='Result'>  {/* style={{display: 'flex'}} */}
-            <div> 
-            <div> 
-                <div className='Quest'>
-                <div style={{fontSize: '20px', fontWeight: '700', fontFamily: 'DungGeunMo'}}>Quest</div>
-                <div>{Res_Period.Quest}</div>
-                </div>
-                {/* <img className='TypeImage'></img> */}
-                <div className='TypeImage'></div>
-                <h1 style={{color: '#fefefe', fontFamily: 'DungGeunMo', padding: '0.5rem'}}>{Type.Char}</h1>
-            </div>
-            <div className='Explain'>
-                <div className='CharInfo'>
-                    <div className='Table'>
-                        <p><b>투자 목적</b>: {Res_Purpose.Grade}
-                        <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 4등급</span></p>
-                        <p><b>위험 감내도</b>: {Res_Tolerance.Grade}
-                        <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 4등급</span></p>
-                        <p><b>금융 이해도</b>: {Res_Literacy.Grade}
-                        <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 2등급</span></p>
-                        <p><b>투자 경험</b>: {Res_Experience.Grade}
-                        <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 2등급</span></p>
+            <Header history={props.history}/>
+            <div className='Result'>  {/* style={{display: 'flex'}} */}
+                <div>
+                    <div> 
+                        <div className='Quest'>
+                        <div style={{fontSize: '20px', fontWeight: '700', fontFamily: 'DungGeunMo'}}>Quest</div>
+                        <div>{Res_Period.Quest}</div>
+                        </div>
+                        {/* <img className='TypeImage'></img> */}
+                        <div className='TypeImage'></div>
+                        <h1 style={{color: '#fefefe', fontFamily: 'DungGeunMo', padding: '0.5rem'}}>{Type.Char}</h1>
                     </div>
 
-                    <div className='Bag'>
-                        <div className='Items'>
-                            <div className='ItemImg'>                                
-                                <img width={42} height={42} src={Res_Literacy.Img} alt='무기 이미지'/> 
+                    <div className='Explain'>
+                        <h3 style={{margin: '0'}}>😎 당신의 캐릭터는...</h3>
+                        <div className='CharInfo'>
+                            {/* 첫번째 칼럼: 등급표 */}
+                            <div className='Table'>
+                                <p><b>투자 목적</b>: {Res_Purpose.Grade}
+                                <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 4등급</span></p>
+                                <p><b>위험 감내도</b>: {Res_Tolerance.Grade}
+                                <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 4등급</span></p>
+                                <p><b>금융 이해도</b>: {Res_Literacy.Grade}
+                                <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 2등급</span></p>
+                                <p><b>투자 경험</b>: {Res_Experience.Grade}
+                                <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 2등급</span></p>
                             </div>
-                            <div style={{marginTop: 'auto', marginBottom:'auto', marginLeft:'0.5rem'}}>
-                                <b>{Res_Literacy.Weapon}</b> <br/>
-                                {Res_Literacy.Level}
+                            {/* 2번째 칼럼: 아이템 */}
+                            <div className='Bag'>
+                                <div className='Items'>
+                                    <div className='ItemImg'>                                
+                                        <img width={42} height={42} src={Res_Literacy.Img} alt='무기 이미지'/> 
+                                    </div>
+                                    <div style={{marginTop: 'auto', marginBottom:'auto', marginLeft:'0.5rem'}}>
+                                        <b>{Res_Literacy.Weapon}</b> <br/>
+                                        {Res_Literacy.Level}
+                                    </div>
+                                </div>
+                                <div className='Items'>
+                                    <div className='ItemImg'>
+                                        <img width={42} height={42} src={Res_Tolerance.Img} alt='방패 이미지'/>  
+                                    </div>
+                                    <div style={{marginTop: 'auto', marginBottom:'auto', marginLeft:'0.5rem'}}>
+                                        <b>{Res_Tolerance.Shield}</b> <br/>
+                                        {Res_Tolerance.Level}
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className='Items'>
-                            <div className='ItemImg'>
-                                <img width={42} height={42} src={Res_Tolerance.Img} alt='방패 이미지'/>  
-                            </div>
-                            <div style={{marginTop: 'auto', marginBottom:'auto', marginLeft:'0.5rem'}}>
-                                <b>{Res_Tolerance.Shield}</b> <br/>
-                                {Res_Tolerance.Level}
-                            </div>
+                        {/* 캐릭터 설명 */}
+                        <div>
+                            <p style={{lineHeight: '1.5rem'}}>{Type.Content}</p>
+                        </div>
+                        {/* 예상 수익률 그래프 */}
+                        <div style={{marginTop:'1rem'}}>
+                            <h3 style={{margin: '0.3rem 0'}}>📈 예상 수익률 그래프</h3>
+                            <Graph P={Money} A={0} Min={MIN} Max={MAX} Rev={REV}  />
                         </div>
                     </div>
                 </div>
-                <Graph P={Money} A={0} Min={MIN} Max={MAX} Rev={REV}  />
-                {/* 캐릭터 설명 +  */}
-                <div>
-                <p>{Type.Content}</p>
+                <NextButton Path={"/"} Per={0} Pur={0} Tol={0} Lit={0} Exp={0} Text={'테스트 다시하기'}/>
+                <div style={{fontSize: '0.8rem', color: '#A7A8A3', textAlign:'left', padding: '1rem'}}>
+                - 칼과 방패는 각각 금융이해도와 위험감내도로 정해집니다. <br/>
+                - 물가 상승률은 2021년 기준 2%입니다. <br />
                 </div>
             </div>
-            </div>
-            <NextButton Path={"/"} Per={0} Pur={0} Tol={0} Lit={0} Exp={0} Text={'테스트 다시하기'}/>
-            <div style={{fontSize: '0.8rem', color: '#A7A8A3', textAlign:'left', padding: '1rem'}}>
-            - 칼과 방패는 각각 금융이해도와 위험감내도로 정해집니다. <br/>
-            </div>
-        </div>
         </div>
     );
 }

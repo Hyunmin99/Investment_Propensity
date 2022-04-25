@@ -286,7 +286,7 @@ const QNA = [
             }
         ]
     },
-    { //7번 페이지: id, page, Question, status, Answers{id, Answer, Price, Value, Img, State} : 투자목적
+    { //7번 페이지: id, page, Question, status, Answers{id, Answer, Type, Value, Img, State} : 투자목적
         id:7,
         page: 7,
         Question: "선호하는 종목을\n마음껏 골라주세요!", 
@@ -295,7 +295,7 @@ const QNA = [
             { 
                 id:1, 
                 Answer: "LG화학", //귀족주
-                Price: "514,000원",
+                Type: "귀족주",
                 Value: -2,
                 Img: '',
                 State: false
@@ -303,7 +303,7 @@ const QNA = [
             {
                 id:2, 
                 Answer: "삼성전자", //대형주
-                Price: "70,100원",
+                Type: "대형주",
                 Value: -4,
                 Img: "",
                 State: false
@@ -311,7 +311,7 @@ const QNA = [
             {
                 id:3, 
                 Answer: "이마트", //경기방어주
-                Price: "131,000원",
+                Type: "경기방어주",
                 Value: -4,
                 Img: "",
                 State: false
@@ -319,7 +319,7 @@ const QNA = [
             {
                 id:4, 
                 Answer: "SK하이닉스", //성장주
-                Price: "119,500원",
+                Type: "성장주",
                 Value: 2,
                 Img: "",
                 State: false
@@ -327,7 +327,7 @@ const QNA = [
             {
                 id:5, 
                 Answer: "쌍방울", //동전주
-                Price: "640원",
+                Type: "동전주",
                 Value: 4,
                 Img: "",
                 State: false
@@ -335,7 +335,7 @@ const QNA = [
             {
                 id:6, 
                 Answer: "한진", //가치주
-                Price: "28,700원",
+                Type: "가치주",
                 Value: 2,
                 Img: "",
                 State: false
@@ -343,7 +343,7 @@ const QNA = [
             {
                 id:7, 
                 Answer: "POSCO", //경기민감주
-                Price: "285,500원",
+                Type: "경기민감주",
                 Value: 2,
                 Img: "",
                 State: false

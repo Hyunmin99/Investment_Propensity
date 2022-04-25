@@ -8,7 +8,7 @@ const QnA = QNA[10];
 
 function Q11(props) {
   const Res = props.location.state.Res;
-  console.log(Res);
+  // console.log(Res);
 
   const [Response, getResponse] = useState('Not Selected!');
 

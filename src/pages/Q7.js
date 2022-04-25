@@ -13,7 +13,7 @@ function Q7(props) {
     function MulSelection({ Answer }) {
         const id = Answer.id;
         const answer = Answer.Answer;
-        const price = Answer.Price;
+        const type = Answer.Type;
 
         const onClick = () => {
             Answer.State = !Answer.State;
@@ -24,7 +24,7 @@ function Q7(props) {
             <div>
                 <div className={'ell-comp'} onClick={onClick} style={{backgroundColor: Answer.State ? '#1d1a82':'#F7F7F7', color: Answer.State && 'White'}}>{answer}
                 <div className={'small-text'} style={{marginTop: '0.5rem'}}>
-                        {price}
+                        {type}
                     </div>
                 </div>
             </div>

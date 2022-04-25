@@ -1,31 +1,21 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 
 function Header({history}) {
-    const mounted = useRef(false);
-    const [isBlocking, setISBlocking] = useState(false);
 
-    const onClick = () => {
-        setISBlocking(true);
-    };
+    function onClick() {
+        const goStart = window.confirm('응답한 결과가 사라져요🥲 \n시작 페이지로 가시겠습니까?');
 
-    useEffect(() => {
-        console.log(history);
-
-        history.block((location, action) => {
-            console.log('#### history block', isBlocking, action, location);
-            if(isBlocking && action === 'POP') {
-                console.log('#### blocked ####');
-                return false;
-            }
-        });
-        // const unblock = history.block("처음 화면으로 돌아가시겠어요? 🥲");
-        // return () => {unblock();}
-    }, [isBlocking]);
+        if (goStart) {
+            return history.push("/");
+        }
+        else return null;
+    }
 
     return (
         <div>
             <div className="Header" onClick={onClick}>
-                <div>투자 유니버스</div>
+            {/* <div className="Header"> */}
+                <div>투자 성향 테스트</div>
             </div>
         </div>
     );
