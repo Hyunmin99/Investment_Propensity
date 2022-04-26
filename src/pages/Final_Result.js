@@ -245,7 +245,7 @@ function Final_Result(props) {
                         {/* 예상 수익률 그래프 */}
                         <div style={{marginTop:'1rem'}}>
                             <h3 style={{margin: '0.3rem 0'}}>📈 예상 수익률 그래프</h3>
-                            <Graph P={Money} A={0} Min={MIN} Max={MAX} Rev={REV}  />
+                            <Graph P={Money} Min={MIN} Max={MAX} Rev={REV}  />
                         </div>
                     </div>
                 </div>
