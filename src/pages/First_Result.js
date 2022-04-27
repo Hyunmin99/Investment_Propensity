@@ -5,6 +5,7 @@ import RESULT from '../content/RESULT';
 import TYPE from '../content/TYPE';
 import NextButton from '../component/NextButton';
 import QNA from '../content/QNA';
+import CircularBar from '../component/CircularBar';
 
 const Result = RESULT;
 const Type = TYPE;
@@ -132,12 +133,14 @@ function First_Result(props) {
             <h1 style={{color: '#fefefe', fontFamily: 'DungGeunMo', padding: '0.5rem'}}>{Res_Type.Char}</h1>
           </div>
           <div className='Explain'>
+            <h3 style={{margin: '0', paddingBottom: '0.8rem'}}>😎 당신의 캐릭터는...</h3>
             <div className='CharInfo'>
+              {/* 첫번째 칼럼: 등급표 */}
               <div className='Table'>
-                <p><b>투자 목적</b>: {Res_Purpose.Grade}<span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 4등급</span></p>
-                <p><b>위험 감내도</b>: {Res_Tolerance.Grade}<span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 4등급</span></p>
-                <p><b>금융 이해도</b>: {Res_Literacy.Grade}<span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 2등급</span></p>
-                <p><b>투자 경험</b>: {Res_Experience.Grade}<span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 2등급</span></p>
+                  <CircularBar Type='투자 목적' Grade={Res_Purpose.Grade}/>
+                  <CircularBar Type='위험 감내도' Grade={Res_Tolerance.Grade}/>
+                  <CircularBar Type='금융 이해도' Grade={Res_Literacy.Grade}/>
+                  <CircularBar Type='투자 경험' Grade={Res_Experience.Grade}/>
               </div>
               <div className='Bag'>
                 <div className='Items'>

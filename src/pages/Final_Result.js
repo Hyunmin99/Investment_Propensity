@@ -6,6 +6,7 @@ import Final_TYPE from '../content/FinalTYPE';
 import NextButton from '../component/NextButton';
 import QNA from '../content/QNA';
 import Graph from '../component/Graph';
+import CircularBar from '../component/CircularBar';
 
 const Result = RESULT;
 const Final_Type = Final_TYPE;
@@ -203,18 +204,14 @@ function Final_Result(props) {
                     </div>
 
                     <div className='Explain'>
-                        <h3 style={{margin: '0'}}>😎 당신의 캐릭터는...</h3>
+                        <h3 style={{margin: '0', paddingBottom: '0.8rem'}}>😎 당신의 캐릭터는...</h3>
                         <div className='CharInfo'>
                             {/* 첫번째 칼럼: 등급표 */}
                             <div className='Table'>
-                                <p><b>투자 목적</b>: {Res_Purpose.Grade}
-                                <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 4등급</span></p>
-                                <p><b>위험 감내도</b>: {Res_Tolerance.Grade}
-                                <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 4등급</span></p>
-                                <p><b>금융 이해도</b>: {Res_Literacy.Grade}
-                                <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 2등급</span></p>
-                                <p><b>투자 경험</b>: {Res_Experience.Grade}
-                                <span style={{color: '#A7A8A3', fontSize: '0.8rem', fontWeight:'800'}}> / 2등급</span></p>
+                                <CircularBar Type='투자 목적' Grade={Res_Purpose.Grade}/>
+                                <CircularBar Type='위험 감내도' Grade={Res_Tolerance.Grade}/>
+                                <CircularBar Type='금융 이해도' Grade={Res_Literacy.Grade}/>
+                                <CircularBar Type='투자 경험' Grade={Res_Experience.Grade}/>
                             </div>
                             {/* 2번째 칼럼: 아이템 */}
                             <div className='Bag'>
@@ -252,7 +249,8 @@ function Final_Result(props) {
                 <NextButton Path={"/"} Per={0} Pur={0} Tol={0} Lit={0} Exp={0} Text={'테스트 다시하기'}/>
                 <div style={{fontSize: '0.8rem', color: '#A7A8A3', textAlign:'left', padding: '1rem'}}>
                 - 칼과 방패는 각각 금융이해도와 위험감내도로 정해집니다. <br/>
-                - 물가 상승률은 2021년 기준 2%입니다. <br />
+                - 현재 가치는 미래의 가치를 현재를 기준으로 환산한 금액입니다. <br/>
+                - 현재 가치는 물가상승률(2021년 기준 2%)을 반영해 계산됩니다.<br />
                 </div>
             </div>
         </div>

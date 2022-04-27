@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
 import { ComposedChart, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Area, Line } from 'recharts';
 import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 
 function Graph({ P, Min, Max, Rev }) {
     //단리, 복리 => 년 단위로 계산
     //적립식 복리 : Compound + Contribute
-    const year = [0, 5, 10, 15, 20, 25, 30, 35, 40];
+    const Year = [0, 5, 10, 15, 20, 25, 30, 35, 40];
     const Contribution = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]; //적립금액
     const inflationRate = 2; //물가 상승률
     function cov_Money(Money) {
@@ -115,7 +108,7 @@ function Graph({ P, Min, Max, Rev }) {
     }
 
     //데이터 세팅
-    const data = year.map(function(t){
+    const data = Year.map(function(t){
         return Cal_Compound_Contribution(t);
     });
 
@@ -124,27 +117,14 @@ function Graph({ P, Min, Max, Rev }) {
         return `${value}년 뒤`
     }
 
-    //Slider handleChange
-    const SLI_handleChange = (event, newValue) => {
-        if (typeof newValue === 'number') {
-          getPeriod(newValue);
-        }
-    };
-
-    //Select Box handleChange
-    const SEL_handleChange = (event) => {
+    //Contribution handleChange
+    const CON_handleChange = (event) => {
         getPMT(event.target.value);
     };
 
-    //Dialog part
-    const [open, setOpen] = React.useState(false);
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = (event, reason) => {
-        if (reason !== 'backdropClick') {
-            setOpen(false);
-          }
+    //Period handleChange
+    const PER_handleChange = (event) => {
+        getPeriod(event.target.value);
     };
 
     return (
@@ -159,59 +139,44 @@ function Graph({ P, Min, Max, Rev }) {
                 <Line unit={covUnits} type="monotone" dataKey="예상수익" stroke="#1D1A82" />
                 <Line unit={covUnits} type="monotone" dataKey="현재가치" stroke="#B45CCA" />
             </ComposedChart>
-
-            <div className='tableStyle'>
-                <ul className='Row'>
-                    <span className='ColumnValue'>예상 수익</span>
-                    <span className='ColumnValue'>현재 가치</span>
-                </ul>
-                <ul className='Row'>
-                    <span className='ColumnValue'>{data[Period/5].예상수익}{covUnits}</span>
-                    <span className='ColumnValue'>{data[Period/5].현재가치}{covUnits}</span>
-                </ul>
-                <div>{valueText(Period)}</div>
-            </div>
-            <div style={{display: 'flex', justifyContent: 'center' }}>
-                <Button onClick={handleClickOpen}>Open Select Dialog</Button>
-                <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-                    <DialogTitle>Fill the form</DialogTitle>
-                    <DialogContent>
-                        <Box sx={{ width: 300, display:'inline-block' }}>
-                            <Slider
-                                value={Period}
-                                aria-label='Year'
-                                getAriaValueText={valueText}
-                                valueLabelFormat={valueText}
-                                valueLabelDisplay='auto'
-                                onChange={SLI_handleChange}
-                                step={5}
-                                min={0}
-                                max={40}
-                                size="small"
-                            />
-                        </Box>
-                        <Box sx={{ width: 300, display:'inline-block' }}>
-                            <FormControl fullWidth>
-                                <InputLabel id="contribution-select-label">납입</InputLabel>
-                                <Select
-                                labelId="contribution-select-label"
-                                id="contribution-select"
-                                value={PMT}
-                                label="만원"
-                                onChange={SEL_handleChange}
-                                defaultValue={0}
-                                >
-                                    {Contribution.map((Value, index) => {
-                                        return <MenuItem key={index} value={Value}>{Value}만원</MenuItem>
-                                    })}
-                                </Select>
-                            </FormControl>
-                        </Box>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Ok</Button>
-                    </DialogActions>
-                </Dialog>
+            <div className='Discription'>
+                <span style={{marginRight: '0.3rem'}}>매년 </span>
+                <Box sx={{ display:'flex' }}>
+                    <FormControl variant='standard' size='small'>
+                        <Select
+                        labelId="contribution-select-label"
+                        id="contribution-select"
+                        value={PMT}
+                        label="만원"
+                        onChange={CON_handleChange}
+                        defaultValue={0}
+                        >
+                            {Contribution.map((Value, index) => {
+                                return <MenuItem key={index} value={Value}>{Value}만원</MenuItem>
+                            })}
+                        </Select>
+                    </FormControl>
+                </Box>
+                <span style={{marginLeft: '0.3rem', marginRight: '0.3rem'}}> 을 적립했을 때 </span>
+                <Box sx={{ display:'flex' }}>
+                    <FormControl variant='standard'>
+                        <Select
+                        labelId="year-select-label"
+                        id="year-select"
+                        value={Period}
+                        label="년"
+                        onChange={PER_handleChange}
+                        defaultValue={0}
+                        >
+                            {Year.map((Value, index) => {
+                                return <MenuItem key={index} value={Value}>{Value}년</MenuItem>
+                            })}
+                        </Select>
+                    </FormControl>
+                </Box>
+                <span> 뒤의 </span>
+                <span>예상 수익은 <b>{data[Period/5].예상수익}{covUnits}</b>입니다.<br/>
+                (현재 가치로 환산시 <b>{data[Period/5].현재가치}{covUnits}</b>)</span>
             </div>
         </div>
     );

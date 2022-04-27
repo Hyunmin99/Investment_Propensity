@@ -260,12 +260,34 @@ body{
   z-index: 1;
 }
 
+.GradeGraph {
+  width: 80px;
+  /* justify-content: center; */
+  text-align: center;
+  display: inline-flexbox;
+  margin-bottom: 0.5rem;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.Table {
+  width: 50%;
+  border-right: solid 1px var(--gray100);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .Bag {
   width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 .Items {
   display: flex;
-  margin: 0.5rem;
+  /* margin: 1rem; */
+  margin-left: 1rem;
 }
 .ItemImg {
   background-color: var(--gray000);
@@ -288,11 +310,6 @@ body{
 
 .CharInfo {
   display: flex;
-}
-
-.Table {
-  width: 50%;
-  border-right: solid 1px var(--gray100);
 }
 
 .Column {
@@ -318,7 +335,17 @@ body{
   display: inline-block;
   width: 50%;
   text-align: center;
+  
+}
 
+.Discription {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  align-content: space-around;
+  line-height: 2rem;
+  text-align: center;
 }
 
 @media screen and (max-width: 540px){
