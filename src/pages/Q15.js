@@ -1,49 +1,39 @@
-import React, { useState } from 'react';
-import '../App.css';
-import Header from '../component/Header';
-import NextButton from '../component/NextButton';
-import QNA from '../content/QNA'
-
-const QnA = QNA[14];
+import React, { useState } from "react";
+import QNA from "../content/QNA";
+import Header from "../component/Header";
+import SingleSel from "../component/SingleSel";
+import MultiSel from "../component/MultiSel";
+import SliderSel from "../component/SliderSel";
+import NextButton from "../component/NextButton";
 
 function Q15(props) {
   const Res = props.location.state.Res;
 
-  const [Response, getResponse] = useState('Not Selected!');
+  const PAGE = 15;
+  const QnA = QNA[QNA.findIndex((qna) => qna.id === PAGE)];
 
-  function SelButton({ Answer }) {
-    const id = Answer.id;
-    const answer = Answer.Answer;
+  const [Response, getResponse] = useState("Not Selected!");
+  Res[PAGE] = Response;
 
-    const onClick = () => {
-      QnA.Answers.map(answer => (
-          answer.State = false
-      ));
-      Answer.State = !Answer.State;
-      QnA.status = true;
-      console.log(answer);
-      getResponse(id);
-    }
-    return (
-      <div>
-        <button className={'sel-button'} onClick={ onClick } style={{backgroundColor: Answer.State ? '#1d1a82':'#F7F7F7', color: Answer.State && 'White'}}>{answer}</button>
-      </div>
-    );
-  }
-  
-  Res[QnA.page] = Response;
-  
   return (
-    <div className="App">
-      <Header history={props.history}/>
-      <div className='Content'>
-        <h3 className='page'>{ QnA.page }</h3> 
-        <h1 className='question'> { QnA.Question }</h1>
-        {QnA.Answers.map(answer => (
-          <SelButton key= {answer.id} Answer={answer}/>
-        ))}
-        {QnA.status ? <NextButton Path={"/q16"} Res={Res} Text={'Next'}/> : <button disabled className='next'>Next</button> }
-      </div>
+    <div>
+      <Header history={props.history} />
+      {QnA.Type === "SingleSel" ? (
+        <SingleSel QnA={QnA} getResponse={getResponse} />
+      ) : QnA.Type === "MultiSel" ? (
+        <MultiSel QnA={QnA} getResponse={getResponse} />
+      ) : (
+        QnA.Type === "SliderSel" && (
+          <SliderSel QnA={QnA} getResponse={getResponse} />
+        )
+      )}
+      {QnA.status ? (
+        <NextButton Path={"/q16"} Res={Res} Text={"Next"} />
+      ) : (
+        <button disabled className="next">
+          Next
+        </button>
+      )}
     </div>
   );
 }

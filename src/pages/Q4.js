@@ -1,59 +1,41 @@
-import React, { useState } from 'react';
-import Header from '../component/Header';
-import NextButton from '../component/NextButton';
-import QNA from '../content/QNA'
-
-const QnA = QNA[3];
+import React, { useState } from "react";
+import QNA from "../content/QNA";
+import Header from "../component/Header";
+import SingleSel from "../component/SingleSel";
+import MultiSel from "../component/MultiSel";
+import SliderSel from "../component/SliderSel";
+import NextButton from "../component/NextButton";
 
 function Q4(props) {
-    const Res = props.location.state.Res;
-    
-    const [Response, getResponse] = useState('Not Selected');
-    function SelButton({ Answer }) {
+  const Res = props.location.state.Res;
 
-        const id = Answer.id;
-        const answer = Answer.Answer;
-        const explain = Answer.Explain;
+  const PAGE = 4;
+  const QnA = QNA[QNA.findIndex((qna) => qna.id === PAGE)];
 
-        const onClick = () => {
-            QnA.Answers.map(answer => (
-                answer.State = false
-            ));
-            Answer.State = !Answer.State;
-            getResponse(id);
-            console.log(answer);
-            QnA.status = true;
-        }
-        return (
-            <div>
-                <button 
-                    className={'sel-button'} 
-                    onClick={ onClick } 
-                    style={{backgroundColor: Answer.State ? '#1d1a82':'#F7F7F7', color: Answer.State && 'White'}}>
-                    {answer}
-                    <div className={'small-text'} style={{marginTop: '0.5rem', color: Answer.State && '#F2F2F2'}}>
-                        {explain}
-                    </div>
-                </button>
-            </div>
-        );
-    }
+  const [Response, getResponse] = useState("Not Selected!");
+  Res[PAGE] = Response;
 
-    Res[QnA.page] = Response;
-    
-    return (
-        <div className="App">
-            <Header history={props.history}/>
-            <div className='Content'>
-                <h3 className='page'>{ QnA.page }</h3> 
-                <h1 className='question'>{ QnA.Question }</h1>
-                {QnA.Answers.map(answer => (
-                    <SelButton key= {answer.id} Answer= {answer}/>
-                ))}
-                {QnA.status ?  <NextButton Path={"/q5"} Res={Res} Text={'Next'}/> : <button disabled className='next'>Next</button> }
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <Header history={props.history} />
+      {QnA.Type === "SingleSel" ? (
+        <SingleSel QnA={QnA} getResponse={getResponse} />
+      ) : QnA.Type === "MultiSel" ? (
+        <MultiSel QnA={QnA} getResponse={getResponse} />
+      ) : (
+        QnA.Type === "SliderSel" && (
+          <SliderSel QnA={QnA} getResponse={getResponse} />
+        )
+      )}
+      {QnA.status ? (
+        <NextButton Path={"/q5"} Res={Res} Text={"Next"} />
+      ) : (
+        <button disabled className="next">
+          Next
+        </button>
+      )}
+    </div>
+  );
 }
 
 export default Q4;

@@ -1,53 +1,41 @@
-import React, { useState } from 'react';
-import Header from '../component/Header';
-import NextButton from '../component/NextButton';
-import QNA from '../content/QNA'
-
-const QnA = QNA[4];
+import React, { useState } from "react";
+import QNA from "../content/QNA";
+import Header from "../component/Header";
+import SingleSel from "../component/SingleSel";
+import MultiSel from "../component/MultiSel";
+import SliderSel from "../component/SliderSel";
+import NextButton from "../component/NextButton";
 
 function Q5(props) {
-    const Res = props.location.state.Res;
-    const ResponseList = [];
-    const [a, setA] = useState(false); // 렌더링을 위해.. 임의로 넣음
+  const Res = props.location.state.Res;
 
-    function MulSelection({ Answer }) {
-        const id = Answer.id;
-        const answer = Answer.Answer;
+  const PAGE = 5;
+  const QnA = QNA[QNA.findIndex((qna) => qna.id === PAGE)];
 
-        const onClick = () => {
-            Answer.State = !Answer.State;
-            QnA.status = true;
-            Answer.State === false ? setA(-id): setA(id);
-        };
-        return (
-            <div>
-                <li className={'ell-comp'} onClick={onClick} style={{backgroundColor: Answer.State ? '#1d1a82':'#F7F7F7', color: Answer.State && 'White'}}>{answer}</li>
-            </div>
-        );
-    }
-    
-    QnA.Answers.map(answer => (
-        answer.State && ResponseList.push(answer.id)
-    ));
-    Res[QnA.page] = ResponseList;
+  const [Response, getResponse] = useState("Not Selected!");
+  Res[PAGE] = Response;
 
-
-    return (
-        <div className="App">
-            <Header history={props.history}/>
-            <div className='Content'>
-                <h3 className='page'>{ QnA.page }</h3> 
-                <h1 className='question'>{ QnA.Question }</h1>
-                <div className={'ell-body'}>
-                    {QnA.Answers.map(answer => (
-                        <MulSelection key= {answer.id} Answer={answer} />
-                    ))}
-                </div>
-                <div style={{paddingTop: '0.5rem'}}></div>
-                {QnA.status ?  <NextButton Path={"/q6"} Res={Res} Text={'Next'}/> : <button disabled className='next'>Next</button> }
-            </div>
-        </div>
-    );
+  return (
+    <div>
+      <Header history={props.history} />
+      {QnA.Type === "SingleSel" ? (
+        <SingleSel QnA={QnA} getResponse={getResponse} />
+      ) : QnA.Type === "MultiSel" ? (
+        <MultiSel QnA={QnA} getResponse={getResponse} />
+      ) : (
+        QnA.Type === "SliderSel" && (
+          <SliderSel QnA={QnA} getResponse={getResponse} />
+        )
+      )}
+      {QnA.status ? (
+        <NextButton Path={"/q6"} Res={Res} Text={"Next"} />
+      ) : (
+        <button disabled className="next">
+          Next
+        </button>
+      )}
+    </div>
+  );
 }
 
 export default Q5;
