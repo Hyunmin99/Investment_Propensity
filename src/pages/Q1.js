@@ -8,7 +8,7 @@ import NextButton from "../component/NextButton";
 
 function Q1(props) {
   const Res = props.location.state.Res;
-
+  console.log(QNA);
   const PAGE = 1;
   const QnA = QNA[QNA.findIndex((qna) => qna.id === PAGE)];
 

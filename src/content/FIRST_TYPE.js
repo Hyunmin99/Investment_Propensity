@@ -1,4 +1,4 @@
-const TYPE = [ //id, Char, Content, Img
+const FIRST_TYPE = [ //id, Char, Content, Img
     {
         id: 1,
         Char: '공격투자형 캐릭터',
@@ -31,4 +31,4 @@ const TYPE = [ //id, Char, Content, Img
     }
 ];
 
-export default TYPE;
+export default FIRST_TYPE;

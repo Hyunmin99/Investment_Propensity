@@ -69,6 +69,9 @@ function Start() {
       answer.State = false
     ))
   ));
+  QNA.map(qna => (
+    qna.status = false
+  ));
   return (
     <div className="App">
       <div className="Start">

@@ -2,171 +2,88 @@ import React from "react";
 import "../App.css";
 import Header from "../component/Header";
 import RESULT from "../content/RESULT";
-import TYPE from "../content/TYPE";
+import TYPE from "../content/FIRST_TYPE";
 import NextButton from "../component/NextButton";
-import QNA from "../content/QNA";
-import AVALUE from "../content/AVALUE";
+import ASCORE from "../content/ASCORE";
 import CircularBar from "../component/CircularBar";
-
-const Result = RESULT;
-const Type = TYPE;
 
 function Test(props) {
   const Res = props.location.state.Res;
   console.log(Res);
 
-  // const QnA = QNA[QNA.findIndex((qna) => qna.id === PAGE)];
-  function responseValue(questionID, responseID) {
-    const valueTable = AVALUE[AVALUE.findIndex((table) => table.id === 1)];
-    console.log(valueTable);
+  function formula_Index(Score) {
+    const Index =
+      Score >= 100
+        ? 4 - parseInt(99 / 25)
+        : Score < 0
+        ? 4 - parseInt(1 / 25)
+        : 4 - parseInt(Score / 25);
+    console.log("******formula_Index", Score, Index);
+
+    return Index;
   }
 
-  //Set Period Value - Q1
-  const Per_Quest = Res[1];
-  //Set Purpose Value - Q2
-  const Pur1 =
-    AVALUE[2].Answer[AVALUE[2].Answer.findIndex((ans) => ans.id === Res[2])]
-      .value;
-  console.log(`****************** ${Pur1}`);
-  //Set Tolerance Value - Q3, Q4
-  const Tol1 = QNA[2].Answers.find(function (data) {
-    return data.id === Res[3];
-  });
-  const Tol2 = QNA[3].Answers.find(function (data) {
-    return data.id === Res[4];
-  });
-  //Set Literacy Value - Q5 (Sum of All Response)
-  let Literacy = 0; //-> Literacy value
-  let tmp = []; //-> 값 보관함
-  for (let i = 0; i < Res[5].length; i++) {
-    tmp[i] = QNA[4].Answers.find(function (data) {
-      return data.id === Res[5][i];
-    });
-    Literacy = Literacy + tmp[i].Value;
-    // console.log('Literacy: ', Literacy, "Value: ", tmp[i].Value);
-  }
-  //Set Experience Value - Q6
-  const Exp1 = QNA[5].Answers.find(function (data) {
-    return data.id === Res[6];
-  });
-
-  // const Period = Per.Value;
-  const Purpose = Pur1;
-  const Tolerance = (Tol1.Value + Tol2.Value) / 2;
-  //Literacy
-  const Experience = Exp1.Value;
-
-  function SetPeriod() {
-    //투자 기간 Index 세팅
-    const idx =
-      Per_Quest === 5
-        ? 0
-        : Per_Quest === 4
-        ? 1
-        : Per_Quest === 3
-        ? 2
-        : Per_Quest === 2
-        ? 3
-        : Per_Quest === 1
-        ? 4
-        : console.log("No Result");
-    console.log("투자 기간 응답: ", Per_Quest, "\n투자 기간 Index: ", idx);
-    return idx;
-  }
-  function SetPurpose() {
-    //투자 목적 Index 세팅
-    const idx =
-      Purpose >= 26
-        ? 0
-        : 16 <= Purpose && Purpose < 26
-        ? 1
-        : 6 <= Purpose && Purpose < 16
-        ? 2
-        : Purpose < 6
-        ? 3
-        : console.log("No Result");
-    console.log("투자 목적 응답: ", Purpose, "\n투자 목적 Index: ", idx);
-    return idx;
-  }
-  function SetTolerance() {
-    //위험 감내도 Index 세팅
-    const idx =
-      Tolerance >= 26
-        ? 0
-        : 16 <= Tolerance && Tolerance < 26
-        ? 1
-        : 6 <= Tolerance && Tolerance < 16
-        ? 2
-        : Tolerance < 6
-        ? 3
-        : console.log("No Result");
-    console.log("위험 감내도 응답: ", Tolerance, "\n위험 감내도 Index: ", idx);
-    return idx;
-  }
-  function SetLiteracy() {
-    //금융 이해도 Index 세팅
-    const idx =
-      Literacy >= 8
-        ? 0
-        : 6 <= Literacy && Literacy < 8
-        ? 1
-        : 3 <= Literacy && Literacy < 6
-        ? 2
-        : Literacy < 3
-        ? 3
-        : console.log("No Result");
-    console.log("금융 이해도 응답: ", Literacy, "\n금융 이해도 Index: ", idx);
-    return idx;
-  }
-  function SetExperience() {
-    //투자 경험 Index 세팅
-    const idx =
-      Experience >= 31
-        ? 0
-        : 21 <= Experience && Experience < 31
-        ? 1
-        : 11 <= Experience && Experience < 21
-        ? 2
-        : Experience < 11
-        ? 3
-        : console.log("No Result");
-
-    console.log("투자 경험 응답: ", Experience, "\n투자 경험 Index: ", idx);
-    return idx;
+  //Type: PERIOD, PURPOSE, TOLERANCE, LITERACY, EXPERIENCE
+  function find_ResultData(Type, Index) {
+    console.log("******find_ResultData", Type, Index);
+    return RESULT[Type][RESULT[Type].findIndex((data) => data.Index === Index)];
   }
 
-  const Res_Period = Result.투자기간[SetPeriod()];
-  const Res_Purpose = Result.투자목적[SetPurpose()];
-  const Res_Tolerance = Result.위험감내수준[SetTolerance()];
-  const Res_Literacy = Result.금융이해도[SetLiteracy()];
-  const Res_Experience = Result.투자경험[SetExperience()];
+  function getScore(questionID) {
+    const Tdata = ASCORE[ASCORE.findIndex((data) => data.id === questionID)];
+    if (Tdata.Type === "Single") {
+      return Tdata.Answer[Tdata.Answer.findIndex((d) => d.id === Res[questionID])].Score;
+    }
+    else if(Tdata.Type === "Multi") {
+        console.log(Tdata, Res[questionID]);
+        let Score = 0;
 
-  //투자 성향 점수 계산
-  const Score =
-    Res_Purpose.Value +
-    Res_Tolerance.Value +
-    Res_Literacy.Value +
-    Res_Experience.Value;
+        for (let i = 0; i < Res[questionID].length; i++) {
+            Score = Score + Tdata.Answer[Tdata.Answer.findIndex((d) => d.id === Res[questionID][i])].Score;
+        }
+        return Score;
+    }
 
-  function SetType() {
-    //투자 성향 캐릭터 Index 세팅
-    const idx =
-      Score >= 15
-        ? 0
-        : 13 <= Score && Score < 15
-        ? 1
-        : 11 <= Score && Score < 13
-        ? 2
-        : 7 <= Score && Score < 11
-        ? 3
-        : Score < 7
-        ? 4
-        : console.log("No Result");
-    console.log("투자 성향 점수: ", Score, "\n투자 성향 Index: ", idx);
-    return idx;
   }
+  console.log(getScore(5));
 
-  const Res_Type = Type[SetType()];
+  const PERIOD = find_ResultData("PERIOD", getScore(1));
+  const PURPOSE = find_ResultData("PURPOSE", formula_Index(getScore(2)));
+  const TOLERANCE = find_ResultData(
+    "TOLERANCE",
+    formula_Index(getScore(3) + getScore(4))
+  );
+  const LITERACY = find_ResultData("LITERACY", formula_Index(getScore(5)))
+  const EXPERIENCE = find_ResultData("EXPERIENCE", formula_Index(getScore(6)));
+
+  console.log(PERIOD, PURPOSE, TOLERANCE, LITERACY, EXPERIENCE);
+
+//   투자 성향 점수 계산
+    const Score =
+      PURPOSE.Value +
+      TOLERANCE.Value +
+      LITERACY.Value +
+      EXPERIENCE.Value;
+
+    function SetType() {
+      //투자 성향 캐릭터 Index 세팅
+      const idx =
+        Score >= 15
+          ? 0
+          : 13 <= Score && Score < 15
+          ? 1
+          : 11 <= Score && Score < 13
+          ? 2
+          : 7 <= Score && Score < 11
+          ? 3
+          : Score < 7
+          ? 4
+          : console.log("No Result");
+      // console.log("투자 성향 점수: ", Score, "\n투자 성향 Index: ", idx);
+      return idx;
+    }
+
+    const Res_Type = TYPE[SetType()];
 
   return (
     <div className="App">
@@ -184,7 +101,7 @@ function Test(props) {
               >
                 Quest
               </div>
-              <div>{Res_Period.Quest}</div>
+              <div>{PERIOD.Quest}</div>
             </div>
             {/* <img className='TypeImage'></img> */}
             <div className="TypeImage"></div>
@@ -205,10 +122,10 @@ function Test(props) {
             <div className="CharInfo">
               {/* 첫번째 칼럼: 등급표 */}
               <div className="Table">
-                <CircularBar Type="투자 목적" Grade={Res_Purpose.Grade} />
-                <CircularBar Type="위험 감내도" Grade={Res_Tolerance.Grade} />
-                <CircularBar Type="금융 이해도" Grade={Res_Literacy.Grade} />
-                <CircularBar Type="투자 경험" Grade={Res_Experience.Grade} />
+                <CircularBar Type="투자 목적" Grade={PURPOSE.Grade} />
+                <CircularBar Type="위험 감내도" Grade={TOLERANCE.Grade} />
+                <CircularBar Type="금융 이해도" Grade={LITERACY.Grade} />
+                <CircularBar Type="투자 경험" Grade={EXPERIENCE.Grade} />
               </div>
               <div className="Bag">
                 <div className="Items">
@@ -216,7 +133,7 @@ function Test(props) {
                     <img
                       width={42}
                       height={42}
-                      src={Res_Literacy.Img}
+                        src={LITERACY.Img}
                       alt="무기 이미지"
                     />
                   </div>
@@ -227,8 +144,8 @@ function Test(props) {
                       marginLeft: "0.5rem",
                     }}
                   >
-                    <b>{Res_Literacy.Weapon}</b> <br />
-                    {Res_Literacy.Level}
+                    <b>{LITERACY.Weapon}</b> <br />
+                    {LITERACY.Level}
                   </div>
                 </div>
                 <div className="Items">
@@ -236,7 +153,7 @@ function Test(props) {
                     <img
                       width={42}
                       height={42}
-                      src={Res_Tolerance.Img}
+                        src={TOLERANCE.Img}
                       alt="무기 이미지"
                     />
                   </div>
@@ -247,16 +164,14 @@ function Test(props) {
                       marginLeft: "0.5rem",
                     }}
                   >
-                    <b>{Res_Tolerance.Shield}</b> <br />
-                    {Res_Tolerance.Level}
+                    <b>{TOLERANCE.Shield}</b> <br />
+                    {TOLERANCE.Level}
                   </div>
                 </div>
               </div>
             </div>
             {/* 캐릭터 설명 +  */}
-            <div>
-              <p>{Res_Type.Content}</p>
-            </div>
+            <div><p>{Res_Type.Content}</p></div>
           </div>
         </div>
         <NextButton Path={"/q7"} Res={Res} Text={"테스트 이어하기"} />

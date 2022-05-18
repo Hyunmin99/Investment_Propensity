@@ -1,4 +1,4 @@
-const TYPE = [
+const FINAL_TYPE = [
     //id, Char, Min, Max, Revenue, Content, Img
     {
         id: 1,
@@ -123,7 +123,7 @@ const TYPE = [
     {
         id: 13,
         Char: "안정형 캐릭터",
-        Min: 0,
+        Min: 0.0,
         Max: 2,
         Revenue: 0.8,
         Content:
@@ -132,4 +132,4 @@ const TYPE = [
     },
 ];
 
-export default TYPE;
+export default FINAL_TYPE;

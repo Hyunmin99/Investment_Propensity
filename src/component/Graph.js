@@ -64,7 +64,12 @@ function Graph({ P, Min, Max, Rev }) {
     //적립식 복리 공식
     function formula_Contribute(r, t) {
         const pmt = covUnits === "억원" ? PMT / 10000 : PMT;
-        return (pmt * ((1 + r / 100) ** t - 1)) / (r / 100);
+        if(r !== 0){
+            return (pmt * ((1 + r / 100) ** t - 1)) / (r / 100);
+        }
+        else { //이자율이 0인 경우, 계산식 분모에 0이 들어가면서 값이 무한대로 수렴 -> 예외처리
+            return pmt * t;
+        }
     }
     //현재가치 공식
     function formula_PV(FV, t) {
@@ -119,6 +124,8 @@ function Graph({ P, Min, Max, Rev }) {
     const data = Year.map(function (t) {
         return Cal_Compound_Contribution(t);
     });
+
+    console.log(data);
 
     //Contribution handleChange
     const CON_handleChange = (event) => {
