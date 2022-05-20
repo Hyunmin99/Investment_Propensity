@@ -3,7 +3,7 @@ import "../App.css";
 import Header from "../component/Header";
 import ASCORE from "../content/ASCORE";
 import CLASSIFY from "../content/CLASSIFY";
-import RESULT from "../content/RESULT";
+import CALCULATE from "../content/CALCULATE";
 import FINAL_TYPE from "../content/FINAL_TYPE";
 import NextButton from "../component/NextButton";
 import Graph from "../component/Graph";
@@ -28,7 +28,7 @@ function Final_Result(props) {
   //Type: PERIOD, PURPOSE, TOLERANCE, LITERACY, EXPERIENCE
   function find_ResultData(Type, Index) {
     console.log("******find_ResultData", Type, Index);
-    return RESULT[Type][RESULT[Type].findIndex((data) => data.Index === Index)];
+    return CALCULATE[Type][CALCULATE[Type].findIndex((data) => data.Index === Index)];
   }
 
   function getScore(questionID) {
@@ -107,8 +107,6 @@ function Final_Result(props) {
         ? "Type2 "
         : PURPOSE < TOLERANCE ? "Type3 " : console.log("Type 체크 에러");
     const Char = Classify + " " + TypeNum + "캐릭터";
-    console.log('Classify', Classify);
-    console.log('TypeNum', TypeNum);
     return Char;
   }
 
@@ -117,10 +115,8 @@ function Final_Result(props) {
       FINAL_TYPE.findIndex(
         (type) => type.Char === SetType(Score, PURPOSE.Grade, TOLERANCE.Grade)
       )
-    ];
-    
-  console.log(SetType(Score, PURPOSE.Grade, TOLERANCE.Grade));
-
+    ]
+  ;
 
   const MONEY = Res[16];
   const MIN = Type.Min;

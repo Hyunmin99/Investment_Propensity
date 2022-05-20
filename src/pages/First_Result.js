@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css";
 import Header from "../component/Header";
-import RESULT from "../content/RESULT";
+import CALCULATE from "../content/CALCULATE";
 import TYPE from "../content/FIRST_TYPE";
 import CLASSIFY from "../content/CLASSIFY"
 import NextButton from "../component/NextButton";
@@ -27,7 +27,7 @@ function First_Result(props) {
   //Type: PERIOD, PURPOSE, TOLERANCE, LITERACY, EXPERIENCE
   function find_ResultData(Type, Index) {
     console.log("******find_ResultData", Type, Index);
-    return RESULT[Type][RESULT[Type].findIndex((data) => data.Index === Index)];
+    return CALCULATE[Type][CALCULATE[Type].findIndex((data) => data.Index === Index)];
   }
 
   function getScore(questionID) {

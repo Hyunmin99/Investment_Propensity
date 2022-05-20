@@ -123,7 +123,7 @@ const FINAL_TYPE = [
     {
         id: 13,
         Char: "안정형 캐릭터",
-        Min: 0.0,
+        Min: 0,
         Max: 2,
         Revenue: 0.8,
         Content:
