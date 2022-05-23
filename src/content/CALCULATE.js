@@ -131,6 +131,41 @@ const CALCULATE = {
     { Index: 4, Value: 2 },
     { Index: 5, Value: 1 },
   ],
+  // 현상유지
+  STATUSQUO: [
+    { Index: 1, Grade: 1 },
+    { Index: 2, Grade: 2 },
+    { Index: 3, Grade: 3 },
+    { Index: 4, Grade: 4 },
+  ],
+  // 보유효과
+  ENDOWMENT: [
+    { Index: 1, Grade: 4 },
+    { Index: 2, Grade: 3 },
+    { Index: 3, Grade: 2 },
+    { Index: 4, Grade: 1 },
+  ],
+  // 손실회피
+  LOSSAVERSION: [
+    { Index: 1, Range: [2, 3], Grade: 1 },
+    { Index: 2, Range: [1], Grade: 2 },
+    { Index: 3, Range: [-1, 0], Grade: 3 },
+    { Index: 4, Range: [-2, -3], Grade: 4 },
+  ],
+  // 성과추종
+  PERFORMANCE: [
+    { Index: 1, Range: [2, 3], Grade: 1 },
+    { Index: 2, Range: [1], Grade: 2 },
+    { Index: 3, Range: [-1, 0], Grade: 3 },
+    { Index: 4, Range: [-2, -3], Grade: 4 },
+  ],
+  // 자기주관
+  OVERCONFIDENCE: [
+    { Index: 1, Grade: 4 },
+    { Index: 2, Grade: 3 },
+    { Index: 3, Grade: 2 },
+    { Index: 4, Grade: 1 },
+  ],
 };
 
 export default CALCULATE;

@@ -22,7 +22,6 @@ function Start() {
     15: false,
     16: false,
     17: false,
-    18: false
   }
   const dummy_Res = {
     1: 4,
@@ -31,8 +30,8 @@ function Start() {
     4: 4,
     5: [1, 12, 13],
     6: 3,
-    7: [1, 6],
-    8: [2],
+    7: 2,
+    8: 2,
     9: 3,
     10: 2,
     11: 3,
@@ -40,9 +39,8 @@ function Start() {
     13: 4,
     14: 2,
     15: 1,
-    16: 2,
-    17: 2290,
-    18: 4
+    16: 2290,
+    17: 3
   }
   const dummy_Res2 = {
     1: 4,
@@ -51,8 +49,8 @@ function Start() {
     4: 4,
     5: [1, 12, 13],
     6: 3,
-    7: [1, 6],
-    8: [2],
+    7: 3,
+    8: 2,
     9: 3,
     10: 2,
     11: 3,
@@ -60,10 +58,9 @@ function Start() {
     13: 4,
     14: 2,
     15: 1,
-    16: 2,
-    17: 32000,
-    18: 4
-  }
+    16: 32000,
+    17: 4
+  };
   QNA.map(qna => (
     qna.Answers.map(answer => (
       answer.State = false

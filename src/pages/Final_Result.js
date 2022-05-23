@@ -8,11 +8,19 @@ import FINAL_TYPE from "../content/FINAL_TYPE";
 import NextButton from "../component/NextButton";
 import Graph from "../component/Graph";
 import CircularBar from "../component/CircularBar";
+import {
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+} from "recharts";
 
 function Final_Result(props) {
   const Res = props.location.state.Res;
   console.log(Res);
 
+  //투자목적, 위험감내도, 금융이해도, 투자경험 인덱스 (등급, 점수 연결)
   function formula_Index(Score) {
     const Index =
       Score >= 100
@@ -20,17 +28,20 @@ function Final_Result(props) {
         : Score < 0
         ? 4 - parseInt(1 / 25)
         : 4 - parseInt(Score / 25);
-    console.log("******formula_Index", Score, Index);
+    console.log("**formula_Index", Score, Index);
 
     return Index;
   }
 
   //Type: PERIOD, PURPOSE, TOLERANCE, LITERACY, EXPERIENCE
   function find_ResultData(Type, Index) {
-    console.log("******find_ResultData", Type, Index);
-    return CALCULATE[Type][CALCULATE[Type].findIndex((data) => data.Index === Index)];
+    console.log("**find_ResultData", Type, Index);
+    return CALCULATE[Type][
+      CALCULATE[Type].findIndex((data) => data.Index === Index)
+    ];
   }
 
+  //각 문항 점수 받아오기 (등급 구하는 문항 제외하고는 인덱스로 세팅)
   function getScore(questionID) {
     const Tdata = ASCORE[ASCORE.findIndex((data) => data.id === questionID)];
     if (Tdata.Type === "Single") {
@@ -38,7 +49,6 @@ function Final_Result(props) {
         Tdata.Answer.findIndex((d) => d.id === Res[questionID])
       ].Score;
     } else if (Tdata.Type === "Multi") {
-      console.log(Tdata, Res[questionID]);
       let Score = 0;
 
       for (let i = 0; i < Res[questionID].length; i++) {
@@ -61,14 +71,59 @@ function Final_Result(props) {
     "TOLERANCE",
     formula_Index(getScore(3) + getScore(4) + getScore(8))
   );
-  const LITERACY = find_ResultData("LITERACY", formula_Index(getScore(5) + getScore(10) + getScore(11)));
+  const LITERACY = find_ResultData(
+    "LITERACY",
+    formula_Index(getScore(5) + getScore(10) + getScore(11))
+  );
   const EXPERIENCE = find_ResultData(
     "EXPERIENCE",
-    formula_Index((getScore(6) + getScore(13))/2)
+    formula_Index((getScore(6) + getScore(13)) / 2)
   );
   const AGE = find_ResultData("AGE", getScore(14));
   const INCOME = find_ResultData("INCOME", getScore(15));
   const PROPERTY = find_ResultData("PROPERTY", getScore(17));
+  // 보유효과
+  const STATUSQUO = find_ResultData("STATUSQUO", getScore(12));
+  // 보유효과
+  const ENDOWMENT = find_ResultData("ENDOWMENT", getScore(9));
+  // 손실회피
+  let LOSSAVERSION = -1;
+  if (TOLERANCE.Grade === 1) {
+    LOSSAVERSION = find_ResultData("LOSSAVERSION", 4);
+  } else {
+    for (let i = 0; i < CALCULATE.LOSSAVERSION.length; i++) {
+      if (
+        CALCULATE.LOSSAVERSION[i].Range.includes(
+          PURPOSE.Grade - TOLERANCE.Grade
+        )
+      )
+        LOSSAVERSION = find_ResultData("LOSSAVERSION", i + 1);
+    }
+  }
+  // 성과추종
+  let PERFORMANCE = -1;
+  for (let i = 0; i < CALCULATE.PERFORMANCE.length; i++) {
+    if (CALCULATE.PERFORMANCE[i].Range.includes(getScore(9) - Res[4]))
+      PERFORMANCE = find_ResultData("PERFORMANCE", i + 1);
+  }
+  // 자기과신
+  const OVERCONFIDENCE = find_ResultData("OVERCONFIDENCE", getScore(12));
+
+  const BEHAVIOR = [
+    { column: "현상유지", value: 5 - STATUSQUO.Grade, fullMark: 5 },
+    { column: "보유효과", value: 5 - ENDOWMENT.Grade, fullMark: 5 },
+    { column: "손실회피", value: 5 - LOSSAVERSION.Grade, fullMark: 5 },
+    { column: "성과추종", value: 5 - PERFORMANCE.Grade, fullMark: 5 },
+    { column: "자기주관", value: 5 - OVERCONFIDENCE.Grade, fullMark: 5 },
+  ];
+  console.log(BEHAVIOR);
+  const tick = [0, 1, 2, 3, 4];
+  const formatTick = (tickItem) => {
+    // if (tickItem)
+    // console.log(tickItem)
+    if (tickItem === 0) return "";
+    else return `${5-tickItem}`
+  }
 
   //토탈 점수 계산
   const Score =
@@ -81,8 +136,8 @@ function Final_Result(props) {
     INCOME.Value +
     PROPERTY.Value;
 
-  console.log(Score);
-    
+  console.log("투자성향점수",Score);
+
   const Class = CLASSIFY[CLASSIFY.findIndex((c) => c.id === 2)];
   function SetType(Score, PURPOSE, TOLERANCE) {
     const Classify =
@@ -97,7 +152,7 @@ function Final_Result(props) {
         : Class.안정형[0] <= Score && Score <= Class.안정형[1]
         ? "안정형"
         : console.log("No Result");
-    
+
     const TypeNum =
       Classify === "안정형"
         ? ""
@@ -105,7 +160,9 @@ function Final_Result(props) {
         ? "Type1 "
         : PURPOSE === TOLERANCE
         ? "Type2 "
-        : PURPOSE < TOLERANCE ? "Type3 " : console.log("Type 체크 에러");
+        : PURPOSE < TOLERANCE
+        ? "Type3 "
+        : console.log("Type 체크 에러");
     const Char = Classify + " " + TypeNum + "캐릭터";
     return Char;
   }
@@ -115,9 +172,7 @@ function Final_Result(props) {
       FINAL_TYPE.findIndex(
         (type) => type.Char === SetType(Score, PURPOSE.Grade, TOLERANCE.Grade)
       )
-    ]
-  ;
-
+    ];
   const MONEY = Res[16];
   const MIN = Type.Min;
   const MAX = Type.Max;
@@ -213,6 +268,43 @@ function Final_Result(props) {
             {/* 캐릭터 설명 */}
             <div>
               <p style={{ lineHeight: "1.5rem" }}>{Type.Content}</p>
+            </div>
+            <h3 style={{ margin: "0", paddingBottom: "0.8rem" }}>
+              🤔 캐릭터의 특징은...
+            </h3>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <RadarChart
+                outerRadius={60}
+                width={260}
+                height={160}
+                // style={{ margin: "0 auto" }}
+                style={{ display: "flex" }}
+                data={BEHAVIOR}
+              >
+                <PolarGrid />
+                <PolarAngleAxis dataKey="column" style={{ fontSize: "14px" }} />
+                <PolarRadiusAxis
+                  angle={90}
+                  // domain={[0, 5]}
+                  ticks={tick}
+                  tickFormatter={formatTick}
+                  style={{ fontSize: "12px" }}
+                />
+                <Radar
+                  name=""
+                  dataKey="value"
+                  stroke="#FFB950"
+                  fill="#FFB950"
+                  fillOpacity={0.6}
+                />
+              </RadarChart>
+              <div style={{}}>
+                <b>현상유지</b>: {STATUSQUO.Grade}등급 <br />
+                <b>보유효과</b>: {ENDOWMENT.Grade}등급 <br />
+                <b>손실회피</b>: {LOSSAVERSION.Grade}등급 <br />
+                <b>성과추종</b>: {PERFORMANCE.Grade}등급 <br />
+                <b>자기주관</b>: {OVERCONFIDENCE.Grade}등급
+              </div>
             </div>
             {/* 예상 수익률 그래프 */}
             <div style={{ marginTop: "1rem" }}>
