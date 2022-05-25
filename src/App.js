@@ -22,7 +22,6 @@ import Q14 from './pages/Q14';
 import Q15 from './pages/Q15';
 import Q16 from './pages/Q16';
 import Q17 from './pages/Q17';
-import Q18 from './pages/Q18';
 import Final_Result from './pages/Final_Result';
 import Test from './pages/Test';
 
@@ -33,7 +32,7 @@ function App() {
     window.onpopstate = function () {
       history.go(1);
     };
-  }, []);
+  }, [history]);
 
   return (
     <div className="App">
@@ -59,7 +58,6 @@ function App() {
             <Route exact path="/q15" component={Q15} />
             <Route exact path="/q16" component={Q16} />
             <Route exact path="/q17" component={Q17} />
-            <Route exact path="/q18" component={Q18} />
             <Route exact path="/result" component={Final_Result} />
             <Route exact path="/t" component={Test} />
           </ScrollToTop>

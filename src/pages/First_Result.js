@@ -1,11 +1,11 @@
 import React from "react";
 import "../App.css";
 import Header from "../component/Header";
-import CALCULATE from "../content/CALCULATE";
+import RESULT from "../content/RESULT";
 import TYPE from "../content/FIRST_TYPE";
-import CLASSIFY from "../content/CLASSIFY"
+import CLASSIFY from "../content/CLASSIFY";
 import NextButton from "../component/NextButton";
-import ASCORE from "../content/ASCORE";
+import QNA from "../content/QNA"
 import CircularBar from "../component/CircularBar";
 
 function First_Result(props) {
@@ -27,34 +27,34 @@ function First_Result(props) {
   //Type: PERIOD, PURPOSE, TOLERANCE, LITERACY, EXPERIENCE
   function find_ResultData(Type, Index) {
     console.log("******find_ResultData", Type, Index);
-    return CALCULATE[Type][CALCULATE[Type].findIndex((data) => data.Index === Index)];
+    return RESULT[Type][RESULT[Type].findIndex((data) => data.Index === Index)];
   }
 
   function getScore(questionID) {
-    const Tdata = ASCORE[ASCORE.findIndex((data) => data.id === questionID)];
-    if (Tdata.Type === "Single") {
-      return Tdata.Answer[
-        Tdata.Answer.findIndex((d) => d.id === Res[questionID])
+    const Tdata = QNA[QNA.findIndex((data) => data.questionID === questionID)];
+    if (Tdata.Type === "SingleSel") {
+      return Tdata.Answers[
+        Tdata.Answers.findIndex((d) => d.id === Res[questionID])
       ].Score;
-    } else if (Tdata.Type === "Multi") {
+    } else if (Tdata.Type === "MultiSel") {
       let Score = 0;
 
       for (let i = 0; i < Res[questionID].length; i++) {
         Score =
           Score +
-          Tdata.Answer[
-            Tdata.Answer.findIndex((d) => d.id === Res[questionID][i])
+          Tdata.Answers[
+            Tdata.Answers.findIndex((d) => d.id === Res[questionID][i])
           ].Score;
       }
       return Score;
     }
   }
 
-  const PERIOD = find_ResultData("PERIOD", getScore(1));
+  const PERIOD = find_ResultData("PERIOD", Res[1]);
   const PURPOSE = find_ResultData("PURPOSE", formula_Index(getScore(2)));
   const TOLERANCE = find_ResultData(
     "TOLERANCE",
-    formula_Index(getScore(3) + getScore(4))
+    formula_Index((getScore(3) + getScore(4))/2)
   );
   const LITERACY = find_ResultData("LITERACY", formula_Index(getScore(5)));
   const EXPERIENCE = find_ResultData("EXPERIENCE", formula_Index(getScore(6)));

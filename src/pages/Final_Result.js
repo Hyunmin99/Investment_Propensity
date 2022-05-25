@@ -1,9 +1,9 @@
 import React from "react";
 import "../App.css";
 import Header from "../component/Header";
-import ASCORE from "../content/ASCORE";
+import QNA from "../content/QNA";
 import CLASSIFY from "../content/CLASSIFY";
-import CALCULATE from "../content/CALCULATE";
+import RESULT from "../content/RESULT";
 import FINAL_TYPE from "../content/FINAL_TYPE";
 import NextButton from "../component/NextButton";
 import Graph from "../component/Graph";
@@ -33,43 +33,43 @@ function Final_Result(props) {
     return Index;
   }
 
-  //Type: PERIOD, PURPOSE, TOLERANCE, LITERACY, EXPERIENCE
-  function find_ResultData(Type, Index) {
-    console.log("**find_ResultData", Type, Index);
-    return CALCULATE[Type][
-      CALCULATE[Type].findIndex((data) => data.Index === Index)
-    ];
-  }
-
-  //각 문항 점수 받아오기 (등급 구하는 문항 제외하고는 인덱스로 세팅)
+  //각 문항 점수 받아오기: 
   function getScore(questionID) {
-    const Tdata = ASCORE[ASCORE.findIndex((data) => data.id === questionID)];
-    if (Tdata.Type === "Single") {
-      return Tdata.Answer[
-        Tdata.Answer.findIndex((d) => d.id === Res[questionID])
+    const Tdata = QNA[QNA.findIndex((data) => data.questionID === questionID)];
+
+    if (Tdata.Type === "SingleSel") {
+      return Tdata.Answers[
+        Tdata.Answers.findIndex((d) => d.id === Res[questionID])
       ].Score;
-    } else if (Tdata.Type === "Multi") {
+    } else if (Tdata.Type === "MultiSel") {
       let Score = 0;
 
       for (let i = 0; i < Res[questionID].length; i++) {
         Score =
           Score +
-          Tdata.Answer[
-            Tdata.Answer.findIndex((d) => d.id === Res[questionID][i])
+          Tdata.Answers[
+            Tdata.Answers.findIndex((d) => d.id === Res[questionID][i])
           ].Score;
       }
       return Score;
     }
   }
 
-  const PERIOD = find_ResultData("PERIOD", getScore(1));
+  function find_ResultData(Type, Index) {
+    console.log("**find_ResultData", Type, Index);
+    return RESULT[Type][
+      RESULT[Type].findIndex((data) => data.Index === Index)
+    ];
+  }
+
+  const PERIOD = find_ResultData("PERIOD", Res[1]);
   const PURPOSE = find_ResultData(
     "PURPOSE",
     formula_Index((getScore(2) + getScore(7)) / 2)
   );
   const TOLERANCE = find_ResultData(
     "TOLERANCE",
-    formula_Index(getScore(3) + getScore(4) + getScore(8))
+    formula_Index((getScore(3) + getScore(4))/2 + getScore(8))
   );
   const LITERACY = find_ResultData(
     "LITERACY",
@@ -79,21 +79,21 @@ function Final_Result(props) {
     "EXPERIENCE",
     formula_Index((getScore(6) + getScore(13)) / 2)
   );
-  const AGE = find_ResultData("AGE", getScore(14));
-  const INCOME = find_ResultData("INCOME", getScore(15));
-  const PROPERTY = find_ResultData("PROPERTY", getScore(17));
+  const AGE = find_ResultData("AGE", Res[14]);
+  const INCOME = find_ResultData("INCOME", Res[15]);
+  const PROPERTY = find_ResultData("PROPERTY", Res[17]);
   // 보유효과
-  const STATUSQUO = find_ResultData("STATUSQUO", getScore(12));
+  const STATUSQUO = find_ResultData("STATUSQUO", Res[12]);
   // 보유효과
-  const ENDOWMENT = find_ResultData("ENDOWMENT", getScore(9));
+  const ENDOWMENT = find_ResultData("ENDOWMENT", Res[9]);
   // 손실회피
   let LOSSAVERSION = -1;
   if (TOLERANCE.Grade === 1) {
     LOSSAVERSION = find_ResultData("LOSSAVERSION", 4);
   } else {
-    for (let i = 0; i < CALCULATE.LOSSAVERSION.length; i++) {
+    for (let i = 0; i < RESULT.LOSSAVERSION.length; i++) {
       if (
-        CALCULATE.LOSSAVERSION[i].Range.includes(
+        RESULT.LOSSAVERSION[i].Range.includes(
           PURPOSE.Grade - TOLERANCE.Grade
         )
       )
@@ -102,19 +102,19 @@ function Final_Result(props) {
   }
   // 성과추종
   let PERFORMANCE = -1;
-  for (let i = 0; i < CALCULATE.PERFORMANCE.length; i++) {
-    if (CALCULATE.PERFORMANCE[i].Range.includes(getScore(9) - Res[4]))
+  for (let i = 0; i < RESULT.PERFORMANCE.length; i++) {
+    if (RESULT.PERFORMANCE[i].Range.includes(Res[9] - Res[4]))
       PERFORMANCE = find_ResultData("PERFORMANCE", i + 1);
   }
   // 자기과신
-  const OVERCONFIDENCE = find_ResultData("OVERCONFIDENCE", getScore(12));
+  const OVERCONFIDENCE = find_ResultData("OVERCONFIDENCE", Res[12]);
 
   const BEHAVIOR = [
     { column: "현상유지", value: 5 - STATUSQUO.Grade, fullMark: 5 },
     { column: "보유효과", value: 5 - ENDOWMENT.Grade, fullMark: 5 },
     { column: "손실회피", value: 5 - LOSSAVERSION.Grade, fullMark: 5 },
     { column: "성과추종", value: 5 - PERFORMANCE.Grade, fullMark: 5 },
-    { column: "자기주관", value: 5 - OVERCONFIDENCE.Grade, fullMark: 5 },
+    { column: "자기과신", value: 5 - OVERCONFIDENCE.Grade, fullMark: 5 },
   ];
   console.log(BEHAVIOR);
   const tick = [0, 1, 2, 3, 4];
@@ -303,7 +303,7 @@ function Final_Result(props) {
                 <b>보유효과</b>: {ENDOWMENT.Grade}등급 <br />
                 <b>손실회피</b>: {LOSSAVERSION.Grade}등급 <br />
                 <b>성과추종</b>: {PERFORMANCE.Grade}등급 <br />
-                <b>자기주관</b>: {OVERCONFIDENCE.Grade}등급
+                <b>자기과신</b>: {OVERCONFIDENCE.Grade}등급
               </div>
             </div>
             {/* 예상 수익률 그래프 */}

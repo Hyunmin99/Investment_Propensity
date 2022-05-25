@@ -1,7 +1,8 @@
 const QNA = [
+  //1번 / 투자기간
   {
-    //1번 / 투자기간
-    id: 1,
+    questionID: 1,
+    Category: "PERIOD",
     Type: "SingleSel",
     Question: "투자를 시작한 이유가\n궁금해요!",
     status: false,
@@ -38,9 +39,10 @@ const QNA = [
       },
     ],
   },
+  //2번 / 투자목적
   {
-    //2번 / 투자목적
-    id: 2,
+    questionID: 2,
+    Category: "PURPOSE",
     Type: "SingleSel",
     Question: "내 자산 10억으로 투자할\n상품을 골라주세요!",
     status: false,
@@ -49,37 +51,43 @@ const QNA = [
         id: 1,
         Answer: "초저위험 상품",
         Description: "은행 예적금, 국공채, MMF, CMA",
+        Score: 10,
         State: false,
       },
       {
         id: 2,
         Answer: "저위험 상품",
         Description: "채권형 펀드, 금융채, 신용도가 높은 회사채",
+        Score: 30,
         State: false,
       },
       {
         id: 3,
         Answer: "중위험 상품",
         Description: "혼합형 펀드, 신용도 중간 등급의 회사채",
+        Score: 50,
         State: false,
       },
       {
         id: 4,
         Answer: "고위험 상품",
         Description: "주식, 신용도가 낮은 회사채, 주식형펀드",
+        Score: 70,
         State: false,
       },
       {
         id: 5,
         Answer: "초고위험 상품",
         Description: "ETF, 선물옵션, 주식형펀드, 파생상품, 주식 신용거래",
+        Score: 90,
         State: false,
       },
     ],
   },
+  //3번 / 위험감내도
   {
-    //3번 / 위험감내도
-    id: 3,
+    questionID: 3,
+    Category: "TOLERANCE",
     Type: "SingleSel",
     Question: "투자할 때 '손실'에 대한\n나의 의견은?",
     status: false,
@@ -88,31 +96,36 @@ const QNA = [
         id: 1,
         Answer: "무슨 일이 있어도 원금은 지켜야 해요",
         Description: "",
+        Score: 10,
         State: false,
       },
       {
         id: 2,
         Answer: "손실은 최소화해야 해요",
         Description: "",
+        Score: 40,
         State: false,
       },
       {
         id: 3,
         Answer: "수익을 위한 약간의 손실 정도는 괜찮아",
         Description: "",
+        Score: 70,
         State: false,
       },
       {
         id: 4,
         Answer: "High Risk, High Return!",
         Description: "",
+        Score: 100,
         State: false,
       },
     ],
   },
+  //4번 / 위험감내도 & 투자행태
   {
-    //4번 / 위험감내도
-    id: 4,
+    questionID: 4,
+    Category: "TOLERANCE, BEHAVIOR",
     Type: "SingleSel",
     Question: "확신을 가지고 산 종목이\n-10%를 찍었다 🥲",
     status: false,
@@ -121,31 +134,36 @@ const QNA = [
         id: 1,
         Answer: "울분을 토하며 손절한다",
         Description: "",
+        Score: 10,
         State: false,
       },
       {
         id: 2,
         Answer: "혹시 모르니 일부만 매도한다",
         Description: "",
+        Score: 40,
         State: false,
       },
       {
         id: 3,
         Answer: "확신을 가지고 장기투자로 가져간다",
         Description: "",
+        Score: 70,
         State: false,
       },
       {
         id: 4,
         Answer: "오히려 좋아, 추가 매수한다",
         Description: "",
+        Score: 100,
         State: false,
       },
     ],
   },
+  //5번 / 금융이해도
   {
-    //5번 / 금융이해도
-    id: 5,
+    questionID: 5,
+    Category: "LITERACY",
     Type: "MultiSel",
     Question: "테스트! 아는 투자 단어를\n모두 골라라!",
     status: false,
@@ -153,83 +171,99 @@ const QNA = [
       {
         id: 1,
         Answer: "PER",
+        Score: 10,
         State: false,
       },
       {
         id: 2,
         Answer: "KPI",
+        Score: -20,
         State: false,
       },
       {
         id: 3,
         Answer: "유상증자",
+        Score: 10,
         State: false,
       },
       {
         id: 4,
         Answer: "ETF",
+        Score: 10,
         State: false,
       },
       {
         id: 5,
         Answer: "세액공제",
+        Score: -20,
         State: false,
       },
       {
         id: 6,
         Answer: "공매도",
+        Score: 10,
         State: false,
       },
       {
         id: 7,
         Answer: "ROA",
+        Score: 10,
         State: false,
       },
       {
         id: 8,
         Answer: "FPS",
+        Score: -20,
         State: false,
       },
       {
         id: 9,
         Answer: "인덱스",
+        Score: 10,
         State: false,
       },
       {
         id: 10,
         Answer: "MTS",
+        Score: 10,
         State: false,
       },
       {
         id: 11,
         Answer: "BTS",
+        Score: -20,
         State: false,
       },
       {
         id: 12,
         Answer: "증거금",
+        Score: 10,
         State: false,
       },
       {
         id: 13,
         Answer: "코스피",
+        Score: 10,
         State: false,
       },
       {
         id: 14,
         Answer: "반모",
+        Score: -20,
         State: false,
       },
       {
         id: 15,
         Answer: "IPO",
+        Score: 10,
         State: false,
       },
     ],
   },
+  //6번 / 투자경험
   {
-    //6번 / 투자경험
-    id: 6,
+    questionID: 6,
+    Category: "EXPERIENCE",
     Type: "SingleSel",
     Question: "내가 주식을 시작한 지\n어언...",
     status: false,
@@ -238,37 +272,43 @@ const QNA = [
         id: 1,
         Answer: "6개월 이하",
         Description: "",
+        Score: 10,
         State: false,
       },
       {
         id: 2,
         Answer: "7개월 ~ 1년 미만",
         Description: "",
+        Score: 30,
         State: false,
       },
       {
         id: 3,
         Answer: "1년 ~ 5년 미만",
         Description: "",
+        Score: 50,
         State: false,
       },
       {
         id: 4,
         Answer: "5년 ~ 10년 미만",
         Description: "",
+        Score: 70,
         State: false,
       },
       {
         id: 5,
         Answer: "10년 이상 미만",
         Description: "",
+        Score: 90,
         State: false,
       },
     ],
   },
+  //7번 / 투자목적
   {
-    //7번 / 투자목적
-    id: 7,
+    questionID: 7,
+    Category: "PURPOSE",
     Type: "SingleSel",
     Question: "1억을 투자, 1년 동안\n이 정도는 땡겨야지!",
     status: false,
@@ -277,37 +317,43 @@ const QNA = [
         id: 1,
         Answer: "200만원(수익률 2%, 100%확률)",
         Description: "",
+        Score: 10,
         State: false,
       },
       {
         id: 2,
         Answer: "500만원(수익률 5%, 80%확률)",
         Description: "",
+        Score: 30,
         State: false,
       },
       {
         id: 3,
         Answer: "1000만원(수익률 10%, 50%확률)",
         Description: "",
+        Score: 50,
         State: false,
       },
       {
         id: 4,
         Answer: "5000만원(수익률 50%, 20%확률)",
         Description: "",
+        Score: 70,
         State: false,
       },
       {
         id: 5,
         Answer: "1억(수익률 100%, 8%확률)",
         Description: "",
+        Score: 90,
         State: false,
       },
     ],
   },
+  //8번 / 위험감내도
   {
-    //8번 / 위험감내도
-    id: 8,
+    questionID: 8,
+    Category: "TOLERANCE",
     Type: "SingleSel",
     Question: "나는 이렇게 투자하는 것을\n선호해요!",
     status: false,
@@ -316,31 +362,36 @@ const QNA = [
         id: 1,
         Answer: "한 종목에 몰빵!",
         Description: "",
+        Score: 10,
         State: false,
       },
       {
         id: 2,
         Answer: "5종목정도 분산해 투자",
         Description: "",
+        Score: 5,
         State: false,
       },
       {
         id: 3,
         Answer: "위험을 줄이기 위해 최대한 분산해 투자",
         Description: "",
+        Score: -5,
         State: false,
       },
       {
         id: 4,
         Answer: "아싸리 ETF에 투자",
         Description: "",
+        Score: -10,
         State: false,
       },
     ],
   },
+  //9번 / 투자행태
   {
-    //9번 / 투자행태
-    id: 9,
+    questionID: 9,
+    Category: "BEHAVIOR",
     Type: "SingleSel",
     Question: "갖고 있던 종목이\n+10%를 찍었다 🥳 ",
     status: false,
@@ -371,9 +422,10 @@ const QNA = [
       },
     ],
   },
+  //10번 / 금융이해도
   {
-    //10번 / 금융이해도
-    id: 10,
+    questionID: 10,
+    Category: "LITERACY",
     Type: "SingleSel",
     Question: "내 소중한 100만원에 대해\n옳지 않는 것은?",
     status: false,
@@ -383,6 +435,7 @@ const QNA = [
         Answer:
           "1년 물가 상승률이 5%일 때, 1년 뒤에\n내 100만원으로 살 수 있는 물건은 적어져요!",
         Description: "",
+        Score: -10,
         State: false,
       },
       {
@@ -390,6 +443,7 @@ const QNA = [
         Answer:
           "내 100만원을 2%의 1년 만기 적금에 넣었을 때,\n1년 후 계좌에는 102만원이...!!",
         Description: "",
+        Score: -10,
         State: false,
       },
       {
@@ -397,12 +451,14 @@ const QNA = [
         Answer:
           "내 소중한 100만원으로 주식 투자를 하면\n원금은 보장되지 않아요!",
         Description: "",
+        Score: -10,
         State: false,
       },
       {
         id: 4,
         Answer: "보통 투자로 1년에 2배 정도는 먹는다던데?",
         Description: "",
+        Score: 10,
         State: false,
       },
       {
@@ -410,13 +466,15 @@ const QNA = [
         Answer:
           "소중한 100만원이 전 재산이라면\n100만원 중 일부만 투자하는 것이 바람직해요!",
         Description: "",
+        Score: -10,
         State: false,
       },
     ],
   },
+  //11번 /금융이해도
   {
-    //11번 /금융이해도
-    id: 11,
+    questionID: 11,
+    Category: "LITERACY",
     Type: "SingleSel",
     Question: "다음 중 틀린 것을 골라라!",
     status: false,
@@ -425,37 +483,43 @@ const QNA = [
         id: 1,
         Answer: "공매도는 없는 주식을 사고 파는 거래요!",
         Description: "",
+        Score: -10,
         State: false,
       },
       {
         id: 2,
         Answer: "KOSPI가 오르면 대부분의 종목은 올라요!",
         Description: "",
+        Score: -10,
         State: false,
       },
       {
         id: 3,
         Answer: "내가 산 종목이 따상을 가면,\n기분이 무지막지 좋아요!",
         Description: "",
+        Score: -10,
         State: false,
       },
       {
         id: 4,
         Answer: "AA급의 채권이 주식 투자보다 안전해요!",
         Description: "",
+        Score: -10,
         State: false,
       },
       {
         id: 5,
         Answer: "인터넷에서 추천해준 주식은\n무조건 믿고 매수해요!",
         Description: "",
+        Score: 10,
         State: false,
       },
     ],
   },
+  //12번 / 투자행태
   {
-    //12번 / 투자행태
-    id: 12,
+    questionID: 12,
+    Category: "BEHAVIOR",
     Type: "SingleSel",
     Question: "투자에 대한 나의\n관심도는?",
     status: false,
@@ -486,9 +550,10 @@ const QNA = [
       },
     ],
   },
+  //13번 / 투자경험
   {
-    //13번 / 투자경험
-    id: 13,
+    questionID: 13,
+    Category: "EXPERIENCE",
     Type: "SingleSel",
     Question: "내가 코인을 시작한지\n어언...",
     status: false,
@@ -497,37 +562,43 @@ const QNA = [
         id: 1,
         Answer: "코인 안사요",
         Description: "",
+        Score: 10,
         State: false,
       },
       {
         id: 2,
         Answer: "6개월 이하",
         Description: "",
+        Score: 30,
         State: false,
       },
       {
         id: 3,
         Answer: "7개월 ~ 1년 미만",
         Description: "",
+        Score: 50,
         State: false,
       },
       {
         id: 4,
         Answer: "1년 ~ 5년 미만",
         Description: "",
+        Score: 70,
         State: false,
       },
       {
         id: 5,
         Answer: "5년 이상 미만",
         Description: "",
+        Score: 90,
         State: false,
       },
     ],
   },
+  //14번 / 연령대
   {
-    //14번 / 연령대
-    id: 14,
+    questionID: 14,
+    Category: "AGE",
     Type: "SingleSel",
     Question: "연령대를 알려주세요!",
     status: false,
@@ -564,9 +635,10 @@ const QNA = [
       },
     ],
   },
+  //15번 / 연평균소득
   {
-    //15번 / 연평균 소득
-    id: 15,
+    questionID: 15,
+    Category: "INCOME",
     Type: "SingleSel",
     Question: "나는 연평균 이만큼 벌어요!",
     status: false,
@@ -603,19 +675,19 @@ const QNA = [
       },
     ],
   },
+  //16번 / 투자금액
   {
-    //16번 / 투자 금액
-    id: 16,
+    questionID: 16,
+    Category: "MONEY",
     Type: "SliderSel",
     Question: "현재의 투자 금액은?\n(투자 예정 금액)",
     status: false,
-    Answers : [
-      {State: false}
-    ]
+    Answers: [{ State: false }],
   },
+  //17번 / 투자자산비율
   {
-    //17번 / 투자자산 비율
-    id: 17,
+    questionID: 17,
+    Category: "PROPERTY",
     Type: "SingleSel",
     Question: "열심히 일해서 모은 10억,\n몇퍼센트를 투자할건가요?",
     status: false,

@@ -10,7 +10,7 @@ function Q14(props) {
   const Res = props.location.state.Res;
 
   const PAGE = 14;
-  const QnA = QNA[QNA.findIndex((qna) => qna.id === PAGE)];
+  const QnA = QNA[QNA.findIndex((qna) => qna.questionID === PAGE)];
 
   const [Response, getResponse] = useState("Not Selected!");
   Res[PAGE] = Response;

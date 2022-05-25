@@ -1,4 +1,4 @@
-const CALCULATE = {
+const RESULT = {
   //투자 기간
   PERIOD: [
     { Index: 1, Value: 2, Quest: "여유자금을 마련하라!" },
@@ -168,4 +168,4 @@ const CALCULATE = {
   ],
 };
 
-export default CALCULATE;
+export default RESULT;

@@ -41,7 +41,7 @@ function SingleSel({QnA, getResponse}) {
     return (
       <div>
         <div className="Content">
-          <h3 className="page">{QnA.id}</h3>
+          <h3 className="page">{QnA.questionID}</h3>
           <h1 className="question"> {QnA.Question}</h1>
           {QnA.Answers.map((answer) => (
             <SelButton key={answer.id} Answer={answer} />
