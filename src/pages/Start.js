@@ -21,7 +21,6 @@ function Start() {
     14: false,
     15: false,
     16: false,
-    17: false,
   }
   const dummy_Res = {
     1: 4,
@@ -39,28 +38,8 @@ function Start() {
     13: 4,
     14: 2,
     15: 1,
-    16: 2290,
-    17: 3
+    16: 3,
   }
-  const dummy_Res2 = {
-    1: 4,
-    2: 3,
-    3: 3,
-    4: 4,
-    5: [1, 12, 13],
-    6: 3,
-    7: 3,
-    8: 2,
-    9: 3,
-    10: 2,
-    11: 3,
-    12: 4,
-    13: 4,
-    14: 2,
-    15: 1,
-    16: 32000,
-    17: 4
-  };
   QNA.map(qna => (
     qna.Answers.map(answer => (
       answer.State = false
@@ -96,12 +75,7 @@ function Start() {
         <NextButton
           Path={"/result"}
           Res={dummy_Res}
-          Text={"결과로 바로 이동 (천)"}
-        />
-        <NextButton
-          Path={"/result"}
-          Res={dummy_Res2}
-          Text={"결과로 바로 이동 (억)"}
+          Text={"결과로 바로 이동"}
         />
         <NextButton Path={"/t"} Res={dummy_Res} Text={"테스트"} />
       </div>

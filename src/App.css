@@ -314,33 +314,33 @@ body{
   display: flex;
 }
 
+.Behavior {
+  padding: 1.2rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+  line-height: 1.8rem;
+  background-color: var(--gray000);
+  border-radius: 0.8rem;
+}
+/* 
 .Column {
   margin: 0 auto;
-}
+} */
 
-.tableStyle {
-  width: 100%;
-  text-align: center;
-}
-
-.Row {
-  /* clear: left; */
+/* .Row {
   margin: 0 auto;
   padding: 0;
-  /* margin: 0;
-  padding: 0; */
   list-style-type: none;
   width: 80%;
-}
+} */
 
-.ColumnValue {
+/* .ColumnValue {
   display: inline-block;
   width: 50%;
   text-align: center;
-  
-}
+} */
 
-.Discription {
+.Description {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

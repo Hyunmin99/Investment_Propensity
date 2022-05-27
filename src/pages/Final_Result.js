@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import "../App.css";
 import Header from "../component/Header";
 import QNA from "../content/QNA";
 import CLASSIFY from "../content/CLASSIFY";
-import RESULT from "../content/RESULT";
 import FINAL_TYPE from "../content/FINAL_TYPE";
-import NextButton from "../component/NextButton";
-import Graph from "../component/Graph";
+import RESULT from "../content/RESULT";
 import CircularBar from "../component/CircularBar";
 import {
   RadarChart,
@@ -15,6 +13,13 @@ import {
   PolarRadiusAxis,
   Radar,
 } from "recharts";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import GBIGraph from "../component/GBIGraph";
+import Pension from "../component/Pension";
+import ProfitGraph from "../component/ProfitGraph";
+import NextButton from "../component/NextButton";
 
 function Final_Result(props) {
   const Res = props.location.state.Res;
@@ -81,7 +86,7 @@ function Final_Result(props) {
   );
   const AGE = find_ResultData("AGE", Res[14]);
   const INCOME = find_ResultData("INCOME", Res[15]);
-  const PROPERTY = find_ResultData("PROPERTY", Res[17]);
+  const PROPERTY = find_ResultData("PROPERTY", Res[16]);
   // 보유효과
   const STATUSQUO = find_ResultData("STATUSQUO", Res[12]);
   // 보유효과
@@ -173,10 +178,17 @@ function Final_Result(props) {
         (type) => type.Char === SetType(Score, PURPOSE.Grade, TOLERANCE.Grade)
       )
     ];
-  const MONEY = Res[16];
+  // const MONEY = Res[16];
   const MIN = Type.Min;
   const MAX = Type.Max;
-  const REV = Type.Revenue;
+  const PRO = Type.Profit;
+
+  //Tab
+  const [graph, setGraph] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setGraph(newValue);
+  };
 
   return (
     <div className="App">
@@ -272,12 +284,19 @@ function Final_Result(props) {
             <h3 style={{ margin: "0", paddingBottom: "0.8rem" }}>
               🤔 캐릭터의 특징은...
             </h3>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                // 밑에 2줄 Devider
+                borderBottom: "solid 1px #e0e0e0",
+                paddingBottom: "1.2rem",
+              }}
+            >
               <RadarChart
                 outerRadius={60}
                 width={260}
                 height={160}
-                // style={{ margin: "0 auto" }}
                 style={{ display: "flex" }}
                 data={BEHAVIOR}
               >
@@ -285,7 +304,6 @@ function Final_Result(props) {
                 <PolarAngleAxis dataKey="column" style={{ fontSize: "14px" }} />
                 <PolarRadiusAxis
                   angle={90}
-                  // domain={[0, 5]}
                   ticks={tick}
                   tickFormatter={formatTick}
                   style={{ fontSize: "12px" }}
@@ -298,7 +316,7 @@ function Final_Result(props) {
                   fillOpacity={0.6}
                 />
               </RadarChart>
-              <div style={{}}>
+              <div className="Behavior">
                 <b>현상유지</b>: {STATUSQUO.Grade}등급 <br />
                 <b>보유효과</b>: {ENDOWMENT.Grade}등급 <br />
                 <b>손실회피</b>: {LOSSAVERSION.Grade}등급 <br />
@@ -306,11 +324,21 @@ function Final_Result(props) {
                 <b>자기과신</b>: {OVERCONFIDENCE.Grade}등급
               </div>
             </div>
-            {/* 예상 수익률 그래프 */}
-            <div style={{ marginTop: "1rem" }}>
-              <h3 style={{ margin: "0.3rem 0" }}>📈 예상 수익률 그래프</h3>
-              <Graph P={MONEY} Min={MIN} Max={MAX} Rev={REV} />
-            </div>
+            {/* Tab - 그래프 표시 */}
+            <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+              <Tabs value={graph} onChange={handleChange} variant="fullWidth">
+                <Tab label="예상 수익률" />
+                <Tab label="단기 GBI" />
+                <Tab label="연금 계산기" />
+              </Tabs>
+            </Box>
+            {graph === 0 ? (
+              <ProfitGraph Min={MIN} Max={MAX} Pro={PRO} />
+            ) : graph === 1 ? (
+              <GBIGraph Min={MIN} Max={MAX} Pro={PRO} />
+            ) : (
+              graph === 2 && <Pension />
+            )}
           </div>
         </div>
         <NextButton Path={"/"} Text={"테스트 다시하기"} />

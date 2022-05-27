@@ -675,18 +675,18 @@ const QNA = [
       },
     ],
   },
-  //16번 / 투자금액
+  // //16번 / 투자금액
+  // {
+  //   questionID: 16,
+  //   Category: "MONEY",
+  //   Type: "SliderSel",
+  //   Question: "현재의 투자 금액은?\n(투자 예정 금액)",
+  //   status: false,
+  //   Answers: [{ State: false }],
+  // },
+  //16번 / 투자자산비율
   {
     questionID: 16,
-    Category: "MONEY",
-    Type: "SliderSel",
-    Question: "현재의 투자 금액은?\n(투자 예정 금액)",
-    status: false,
-    Answers: [{ State: false }],
-  },
-  //17번 / 투자자산비율
-  {
-    questionID: 17,
     Category: "PROPERTY",
     Type: "SingleSel",
     Question: "열심히 일해서 모은 10억,\n몇퍼센트를 투자할건가요?",

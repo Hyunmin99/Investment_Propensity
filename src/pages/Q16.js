@@ -28,7 +28,7 @@ function Q16(props) {
         )
       )}
       {QnA.status ? (
-        <NextButton Path={"/q17"} Res={Res} Text={"Next"} />
+        <NextButton Path={"/result"} Res={Res} Text={"Next"} />
       ) : (
         <button disabled className="next">
           Next
