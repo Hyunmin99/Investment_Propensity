@@ -61,7 +61,7 @@ function GBIGraph({ Min, Max, Pro }) {
   //input
   const [Method, setMethod] = useState("LumpSum");
   const [Period, setPeriod] = useState(3);
-  const [Money, setMoney] = useState(300);
+  const [Money, setMoney] = useState(10000);
 
   const handleMethod = (event) => {
     setMethod(event.target.value);
