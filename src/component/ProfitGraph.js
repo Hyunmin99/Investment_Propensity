@@ -46,7 +46,7 @@ function ProfitGraph({ Min, Max, Pro }) {
   // }
 
   const [Period, getPeriod] = useState(15);
-  const [PP, setPP] = useState(150);
+  const [P, setP] = useState(150);
   const [PMT, getPMT] = useState(0);
 
   //소수점 둘째 자리 반올림
@@ -78,14 +78,14 @@ function ProfitGraph({ Min, Max, Pro }) {
 
   //단리 계산기
   function Cal_Simple(t) {
-    const MIN_VALUE = formula_Simple(PP, Min, t);
-    const MAX_VALUE = formula_Simple(PP, Max, t);
-    const REV_VALUE = formula_Simple(PP, Pro, t);
+    const MIN_VALUE = formula_Simple(P, Min, t);
+    const MAX_VALUE = formula_Simple(P, Max, t);
+    const PRO_VALUE = formula_Simple(P, Pro, t);
     const obj = {
       year: t + "년",
       예상수익범위: [round_two(MIN_VALUE), round_two(MAX_VALUE)],
-      예상수익: round_two(REV_VALUE),
-      현재가치: round_two(formula_PV(REV_VALUE, t)),
+      예상수익: round_two(PRO_VALUE),
+      현재가치: round_two(formula_PV(PRO_VALUE, t)),
     };
     return obj;
   }
@@ -93,14 +93,14 @@ function ProfitGraph({ Min, Max, Pro }) {
   //복리 계산기
   //*년복리
   function Cal_Compound(t) {
-    const MIN_VALUE = formula_Compound(PP, Min, t);
-    const MAX_VALUE = formula_Compound(PP, Max, t);
-    const REV_VALUE = formula_Compound(PP, Pro, t);
+    const MIN_VALUE = formula_Compound(P, Min, t);
+    const MAX_VALUE = formula_Compound(P, Max, t);
+    const PRO_VALUE = formula_Compound(P, Pro, t);
     const obj = {
       year: t + "년",
       예상수익범위: [round_two(MIN_VALUE), round_two(MAX_VALUE)],
-      예상수익: round_two(REV_VALUE),
-      현재가치: round_two(formula_PV(REV_VALUE, t)),
+      예상수익: round_two(PRO_VALUE),
+      현재가치: round_two(formula_PV(PRO_VALUE, t)),
     };
     return obj;
   }
@@ -108,14 +108,14 @@ function ProfitGraph({ Min, Max, Pro }) {
   //적립식 복리 계산기
   //*년복리
   function Cal_Compound_Contribution(t) {
-    const MIN_VALUE = formula_Compound(PP, Min, t) + formula_Contribute(PMT, Min, t);
-    const MAX_VALUE = formula_Compound(PP, Max, t) + formula_Contribute(PMT, Max, t);
-    const REV_VALUE = formula_Compound(PP, Pro, t) + formula_Contribute(PMT, Pro, t);
+    const MIN_VALUE = formula_Compound(P, Min, t) + formula_Contribute(PMT, Min, t);
+    const MAX_VALUE = formula_Compound(P, Max, t) + formula_Contribute(PMT, Max, t);
+    const PRO_VALUE = formula_Compound(P, Pro, t) + formula_Contribute(PMT, Pro, t);
     const obj = {
       year: t + "년",
       예상수익범위: [round_two(MIN_VALUE), round_two(MAX_VALUE)],
-      예상수익: round_two(REV_VALUE),
-      현재가치: round_two(formula_PV(REV_VALUE, t)),
+      예상수익: round_two(PRO_VALUE),
+      현재가치: round_two(formula_PV(PRO_VALUE, t)),
     };
     return obj;
   }
@@ -137,13 +137,11 @@ function ProfitGraph({ Min, Max, Pro }) {
     getPeriod(event.target.value);
   };
 
-  const PP_handlChange = (event) => {
-    setPP(event.target.value);
-    // covMoney = cov_Money(PP);
-    // covUnits = cov_Units(PP);
+  const P_handlChange = (event) => {
+    setP(event.target.value);
+    // covMoney = cov_Money(P);
+    // covUnits = cov_Units(P);
   }
-
-  console.log(PP);
 
   return (
     <div style={{ marginTop: "1rem" }}>
@@ -155,8 +153,8 @@ function ProfitGraph({ Min, Max, Pro }) {
           <FormControl variant="standard">
             <Input
               id="초기투자금액"
-              value={PP}
-              onChange={PP_handlChange}
+              value={P}
+              onChange={P_handlChange}
               endAdornment={
                 <InputAdornment position="end">만원</InputAdornment>
               }

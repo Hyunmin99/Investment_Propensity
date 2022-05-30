@@ -26,17 +26,17 @@ function GBIGraph({ Min, Max, Pro }) {
     return Math.round(float * 1e2) / 1e2;
   }
   //복리 공식
-  function formula_Compound(r, t) {
-    return Seed * (r / 100 + 1) ** t;
+  function formula_Compound(P, r, t) {
+    return P * (r / 100 + 1) ** t;
   }
   //적립식 복리 공식
-  function formula_Contribute(r, t) {
+  function formula_Contribute(PMT, r, t) {
     // const pmt = covUnits === "억원" ? PMT / 10000 : PMT;
     if (r !== 0) {
-      return (Contribution * ((1 + r / 100) ** t - 1)) / (r / 100);
+      return (PMT * ((1 + r / 100) ** t - 1)) / (r / 100);
     } else {
       //이자율이 0인 경우, 계산식 분모에 0이 들어가면서 값이 무한대로 수렴 -> 예외처리
-      return Contribution * t;
+      return PMT * t;
     }
   }
   //현재가치 공식
@@ -46,14 +46,14 @@ function GBIGraph({ Min, Max, Pro }) {
   //적립식 복리 계산기
   //*년복리
   function Cal_Compound_Contribution(t) {
-    const MIN_VALUE = formula_Compound(Min, t) + formula_Contribute(Min, t);
-    const MAX_VALUE = formula_Compound(Max, t) + formula_Contribute(Max, t);
-    const REV_VALUE = formula_Compound(Pro, t) + formula_Contribute(Pro, t);
+    const MIN_VALUE = formula_Compound(P, Min, t) + formula_Contribute(PMT, Min, t);
+    const MAX_VALUE = formula_Compound(P, Max, t) + formula_Contribute(PMT, Max, t);
+    const PRO_VALUE = formula_Compound(P, Pro, t) + formula_Contribute(PMT, Pro, t);
     const obj = {
       year: t + "년",
       예상수익범위: [round_two(MIN_VALUE), round_two(MAX_VALUE)],
-      예상수익: round_two(REV_VALUE),
-      현재가치: round_two(formula_PV(REV_VALUE, t)),
+      예상수익: round_two(PRO_VALUE),
+      현재가치: round_two(formula_PV(PRO_VALUE, t)),
     };
     return obj;
   }
@@ -61,7 +61,7 @@ function GBIGraph({ Min, Max, Pro }) {
   //input
   const [Method, setMethod] = useState("LumpSum");
   const [Period, setPeriod] = useState(3);
-  const [Money, setMoney] = useState(10000);
+  const [T, setT] = useState(10000);
 
   const handleMethod = (event) => {
     setMethod(event.target.value);
@@ -70,26 +70,25 @@ function GBIGraph({ Min, Max, Pro }) {
     //   if(event.target)
     setPeriod(event.target.value);
   };
-  const handleMoney = (event) => {
-    setMoney(event.target.value);
+  const handleT = (event) => {
+    setT(event.target.value);
   };
 
   //calculate
-  let Seed = 0;
-  let Contribution = 0;
+  let P = 0;
+  let PMT = 0;
   const inflationRate = 2;
 
   if(Method === "LumpSum") {
-    Seed = formula_LumpSum(Money, Pro, Period);
-    Contribution = 0;
+    P = formula_LumpSum(T, Pro, Period);
+    PMT = 0;
   }
   else if (Method === "Mutual") {
-    Seed = 0;
-    Contribution = formula_Mutual(Money, Pro, Period);
+    P = 0;
+    PMT = formula_Mutual(T, Pro, Period);
   }
 
   //데이터 세팅
-  // const year_length = Period + 1;
   const Year = Array.from({length: (parseInt(Period) + 1)}, (v, i) => i);
   const data = Year.map(function (t) {
     return Cal_Compound_Contribution(t);
@@ -131,8 +130,8 @@ function GBIGraph({ Min, Max, Pro }) {
           <FormControl variant="standard">
             <Input
               id="money"
-              value={Money}
-              onChange={handleMoney}
+              value={T}
+              onChange={handleT}
               endAdornment={
                 <InputAdornment position="end">만원</InputAdornment>
               }
@@ -146,12 +145,12 @@ function GBIGraph({ Min, Max, Pro }) {
         <span>을 모으기 위해...</span>
         {Method === "LumpSum" && (
           <span style={{ marginTop: "0.8rem" }}>
-            초기 투자 금액은 <b>{round_two(Seed)}</b>만원이에요!
+            초기 투자 금액은 <b>{round_two(P)}</b>만원이에요!
           </span>
         )}
         {Method === "Mutual" && (
           <span style={{ marginTop: "0.8rem" }}>
-            매년 <b>{round_two(Contribution)}</b>만원을 넣어야해요!
+            매년 <b>{round_two(PMT)}</b>만원을 넣어야해요!
           </span>
         )}
       </div>
