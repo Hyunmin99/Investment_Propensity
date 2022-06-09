@@ -3,14 +3,14 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 function CircularBar({ Type, Grade }) {
-  const MIN = Type === "투자 목적" ? 4 : Type === "위험 감내도" ? 4 : 2;
+  const MIN = 4;
 
   return (
     <div>
       <div className="GradeGraph">
         <div style={{ width: 64, height: 64, display: "inline-block" }}>
           <CircularProgressbar
-            value={(MIN + 1 - Grade) * (100 / MIN)}
+            value={(5 - Grade) * 25}
             text={`${Grade}등급`}
             circleRatio={0.75}
             strokeWidth={14}

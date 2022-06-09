@@ -71,8 +71,8 @@ const RESULT = {
     },
     {
       Index: 2,
-      Grade: 1,
-      Value: 5,
+      Grade: 2,
+      Value: 4,
       Name: "High",
       Img: "assets/weapon/weapon-lv3.svg",
       Weapon: "고급자의 칼",
@@ -81,8 +81,8 @@ const RESULT = {
     },
     {
       Index: 3,
-      Grade: 2,
-      Value: 2,
+      Grade: 3,
+      Value: 3,
       Name: "Low",
       Img: "assets/weapon/weapon-lv2.svg",
       Weapon: "초급자의 칼",
@@ -91,21 +91,21 @@ const RESULT = {
     },
     {
       Index: 4,
-      Grade: 2,
+      Grade: 4,
+      Value: 2,
       Name: "Rare",
       Img: "assets/weapon/weapon-lv1.svg",
       Weapon: "장난감 칼",
       Level: "Lv.1",
       Content: "",
-      Value: 2,
     },
   ],
   // 투자 경험
   EXPERIENCE: [
     { Index: 1, Grade: 1, Value: 5, Name: "High Risk Assets" },
-    { Index: 2, Grade: 1, Value: 5, Name: "Medium Risk Assets" },
-    { Index: 3, Grade: 2, Value: 2, Name: "Low Risk Assets" },
-    { Index: 4, Grade: 2, Value: 2, Name: "Savings" },
+    { Index: 2, Grade: 2, Value: 4, Name: "Medium Risk Assets" },
+    { Index: 3, Grade: 3, Value: 3, Name: "Low Risk Assets" },
+    { Index: 4, Grade: 4, Value: 2, Name: "Savings" },
   ],
   // 연령대
   AGE: [

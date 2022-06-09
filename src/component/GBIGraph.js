@@ -11,53 +11,14 @@ import {
   Area,
   Line,
 } from "recharts";
+import { CompoundContribution } from "../calculate/Calculator";
+import {ROUNDTWO, LUMPSUM, MUTUAL} from "../calculate/Formula";
+
 
 function GBIGraph({ Min, Max, Pro }) {
-  //거치식 GBI
-  function formula_LumpSum(T, r, t) {
-    return T / (r / 100 + 1) ** t;
-  }
-  //적립식 GBI
-  function formula_Mutual(T, r, t) {
-    return (T * (r/100))/((1 + r/100)**t -1);
-  }
-  //소수점 둘째 자리 반올림
-  function round_two(float) {
-    return Math.round(float * 1e2) / 1e2;
-  }
-  //복리 공식
-  function formula_Compound(P, r, t) {
-    return P * (r / 100 + 1) ** t;
-  }
-  //적립식 복리 공식
-  function formula_Contribute(PMT, r, t) {
-    // const pmt = covUnits === "억원" ? PMT / 10000 : PMT;
-    if (r !== 0) {
-      return (PMT * ((1 + r / 100) ** t - 1)) / (r / 100);
-    } else {
-      //이자율이 0인 경우, 계산식 분모에 0이 들어가면서 값이 무한대로 수렴 -> 예외처리
-      return PMT * t;
-    }
-  }
-  //현재가치 공식
-  function formula_PV(FV, t) {
-    return FV / (1 + inflationRate / 100) ** t;
-  }
-  //적립식 복리 계산기
-  //*년복리
-  function Cal_Compound_Contribution(t) {
-    const MIN_VALUE = formula_Compound(P, Min, t) + formula_Contribute(PMT, Min, t);
-    const MAX_VALUE = formula_Compound(P, Max, t) + formula_Contribute(PMT, Max, t);
-    const PRO_VALUE = formula_Compound(P, Pro, t) + formula_Contribute(PMT, Pro, t);
-    const obj = {
-      year: t + "년",
-      예상수익범위: [round_two(MIN_VALUE), round_two(MAX_VALUE)],
-      예상수익: round_two(PRO_VALUE),
-      현재가치: round_two(formula_PV(PRO_VALUE, t)),
-    };
-    return obj;
-  }
-
+  //calculate
+  let P = 0;
+  let PMT = 0;
   //input
   const [Method, setMethod] = useState("LumpSum");
   const [Period, setPeriod] = useState(3);
@@ -74,24 +35,19 @@ function GBIGraph({ Min, Max, Pro }) {
     setT(event.target.value);
   };
 
-  //calculate
-  let P = 0;
-  let PMT = 0;
-  const inflationRate = 2;
-
-  if(Method === "LumpSum") {
-    P = formula_LumpSum(T, Pro, Period);
+  if (Method === "LumpSum") {
+    P = LUMPSUM(T, Pro, Period);
     PMT = 0;
-  }
-  else if (Method === "Mutual") {
+  } else if (Method === "Mutual") {
     P = 0;
-    PMT = formula_Mutual(T, Pro, Period);
+    PMT = MUTUAL(T, Pro, Period);
   }
 
   //데이터 세팅
-  const Year = Array.from({length: (parseInt(Period) + 1)}, (v, i) => i);
+  const Year = Array.from({ length: parseInt(Period) + 1 }, (v, i) => i);
+
   const data = Year.map(function (t) {
-    return Cal_Compound_Contribution(t);
+    return CompoundContribution(P, PMT, t, Min, Max, Pro);
   });
 
   return (
@@ -145,12 +101,12 @@ function GBIGraph({ Min, Max, Pro }) {
         <span>을 모으기 위해...</span>
         {Method === "LumpSum" && (
           <span style={{ marginTop: "0.8rem" }}>
-            초기 투자 금액은 <b>{round_two(P)}</b>만원이에요!
+            초기 투자 금액은 <b>{ROUNDTWO(P)}</b>만원이에요!
           </span>
         )}
         {Method === "Mutual" && (
           <span style={{ marginTop: "0.8rem" }}>
-            매년 <b>{round_two(PMT)}</b>만원을 넣어야해요!
+            매년 <b>{ROUNDTWO(PMT)}</b>만원을 넣어야해요!
           </span>
         )}
       </div>

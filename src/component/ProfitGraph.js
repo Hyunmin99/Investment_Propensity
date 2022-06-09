@@ -9,18 +9,17 @@ import {
   Area,
   Line,
 } from "recharts";
-// import Box from "@mui/material/Box";
-// import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-// import Select from "@mui/material/Select";
 import { Box, InputAdornment, Input, MenuItem, Select } from "@mui/material";
+
+import {CompoundContribution} from "../calculate/Calculator"
 
 function ProfitGraph({ Min, Max, Pro }) {
   //단리, 복리 => 년 단위로 계산
   //적립식 복리 : Compound + Contribute
   const Year = [0, 5, 10, 15, 20, 25, 30, 35, 40];
   const Contribution = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]; //적립금액
-  const inflationRate = 2; //물가 상승률
+
   // function cov_Money(Money) {
   //   let scaledValue = Money;
 
@@ -49,80 +48,9 @@ function ProfitGraph({ Min, Max, Pro }) {
   const [P, setP] = useState(150);
   const [PMT, getPMT] = useState(0);
 
-  //소수점 둘째 자리 반올림
-  function round_two(float) {
-    return Math.round(float * 1e2) / 1e2;
-  }
-  //단리 공식
-  function formula_Simple(P, r, t) {
-    return P + (r / 100) * P * t;
-  }
-  //복리 공식
-  function formula_Compound(P, r, t) {
-    return P * (r / 100 + 1) ** t;
-  }
-  //적립식 복리 공식
-  function formula_Contribute(pmt, r, t) {
-    // const pmt = covUnits === "억원" ? PMT / 10000 : PMT;
-    if (r !== 0) {
-      return (pmt * ((1 + r / 100) ** t - 1)) / (r / 100);
-    } else {
-      //이자율이 0인 경우, 계산식 분모에 0이 들어가면서 값이 무한대로 수렴 -> 예외처리
-      return pmt * t;
-    }
-  }
-  //현재가치 공식
-  function formula_PV(FV, t) {
-    return FV / (1 + inflationRate / 100) ** t;
-  }
-
-  //단리 계산기
-  function Cal_Simple(t) {
-    const MIN_VALUE = formula_Simple(P, Min, t);
-    const MAX_VALUE = formula_Simple(P, Max, t);
-    const PRO_VALUE = formula_Simple(P, Pro, t);
-    const obj = {
-      year: t + "년",
-      예상수익범위: [round_two(MIN_VALUE), round_two(MAX_VALUE)],
-      예상수익: round_two(PRO_VALUE),
-      현재가치: round_two(formula_PV(PRO_VALUE, t)),
-    };
-    return obj;
-  }
-
-  //복리 계산기
-  //*년복리
-  function Cal_Compound(t) {
-    const MIN_VALUE = formula_Compound(P, Min, t);
-    const MAX_VALUE = formula_Compound(P, Max, t);
-    const PRO_VALUE = formula_Compound(P, Pro, t);
-    const obj = {
-      year: t + "년",
-      예상수익범위: [round_two(MIN_VALUE), round_two(MAX_VALUE)],
-      예상수익: round_two(PRO_VALUE),
-      현재가치: round_two(formula_PV(PRO_VALUE, t)),
-    };
-    return obj;
-  }
-
-  //적립식 복리 계산기
-  //*년복리
-  function Cal_Compound_Contribution(t) {
-    const MIN_VALUE = formula_Compound(P, Min, t) + formula_Contribute(PMT, Min, t);
-    const MAX_VALUE = formula_Compound(P, Max, t) + formula_Contribute(PMT, Max, t);
-    const PRO_VALUE = formula_Compound(P, Pro, t) + formula_Contribute(PMT, Pro, t);
-    const obj = {
-      year: t + "년",
-      예상수익범위: [round_two(MIN_VALUE), round_two(MAX_VALUE)],
-      예상수익: round_two(PRO_VALUE),
-      현재가치: round_two(formula_PV(PRO_VALUE, t)),
-    };
-    return obj;
-  }
-
   //데이터 세팅
   const data = Year.map(function (t) {
-    return Cal_Compound_Contribution(t);
+    return CompoundContribution(P, PMT, t, Min, Max, Pro);
   });
 
   // console.log(data);
@@ -141,7 +69,7 @@ function ProfitGraph({ Min, Max, Pro }) {
     setP(event.target.value);
     // covMoney = cov_Money(P);
     // covUnits = cov_Units(P);
-  }
+  };
 
   return (
     <div style={{ marginTop: "1rem" }}>

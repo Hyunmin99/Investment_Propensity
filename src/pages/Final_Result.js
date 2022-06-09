@@ -17,7 +17,7 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import GBIGraph from "../component/GBIGraph";
-import Pension from "../component/Pension";
+import Retirement from "../component/Retirement";
 import ProfitGraph from "../component/ProfitGraph";
 import NextButton from "../component/NextButton";
 
@@ -337,7 +337,7 @@ function Final_Result(props) {
             ) : graph === 1 ? (
               <GBIGraph Min={MIN} Max={MAX} Pro={PRO} />
             ) : (
-              graph === 2 && <Pension />
+              graph === 2 && <Retirement Min={MIN} Max={MAX} Pro={PRO} />
             )}
           </div>
         </div>
