@@ -47,3 +47,13 @@ export function CompoundContribution(P, PMT, t, Min, Max, Pro) {
   };
   return obj;
 }
+
+//수익범위 없는 적립식 복리 계산기 (return dataset)
+export function RCompoundContribution(P, PMT, t, Pro) {
+  const PRO_VALUE = COMPOUND(P, Pro, t) + CONTRIBUTE(PMT, Pro, t);
+  const obj = {
+    year: t + "년",
+    예상수익: ROUNDTWO(PRO_VALUE),
+  };
+  return obj;
+}

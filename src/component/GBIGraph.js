@@ -99,16 +99,26 @@ function GBIGraph({ Min, Max, Pro }) {
           </FormControl>
         </Box>
         <span>을 모으기 위해...</span>
-        {Method === "LumpSum" && (
-          <span style={{ marginTop: "0.8rem" }}>
-            초기 투자 금액은 <b>{ROUNDTWO(P)}</b>만원이에요!
-          </span>
+        <div
+          style={{
+            backgroundColor: "#F4F3F4",
+            width: "100%",
+            margin: "1rem 0",
+            padding: "0.5rem 1.2rem",
+            borderRadius: "0.8rem",
+          }}
+        >
+          {Method === "LumpSum" && (
+            <span style={{ marginTop: "0.8rem" }}>
+              초기 투자 금액은 <b>{ROUNDTWO(P)}</b>만원이에요!
+            </span>
+          )}
+          {Method === "Mutual" && (
+            <span style={{ marginTop: "0.8rem" }}>
+              매년 <b>{ROUNDTWO(PMT)}</b>만원을 넣어야해요!
+            </span>
         )}
-        {Method === "Mutual" && (
-          <span style={{ marginTop: "0.8rem" }}>
-            매년 <b>{ROUNDTWO(PMT)}</b>만원을 넣어야해요!
-          </span>
-        )}
+        </div>
       </div>
 
       <ComposedChart

@@ -329,7 +329,7 @@ function Final_Result(props) {
               <Tabs value={graph} onChange={handleChange} variant="fullWidth">
                 <Tab label="예상 수익률" />
                 <Tab label="단기 GBI" />
-                <Tab label="연금 계산기" />
+                <Tab label="은퇴 계산기" />
               </Tabs>
             </Box>
             {graph === 0 ? (
@@ -337,7 +337,7 @@ function Final_Result(props) {
             ) : graph === 1 ? (
               <GBIGraph Min={MIN} Max={MAX} Pro={PRO} />
             ) : (
-              graph === 2 && <Retirement Min={MIN} Max={MAX} Pro={PRO} />
+              graph === 2 && <Retirement Pro={PRO} Age={AGE.Average} />
             )}
           </div>
         </div>

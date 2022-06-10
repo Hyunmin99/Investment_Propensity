@@ -109,11 +109,11 @@ const RESULT = {
   ],
   // 연령대
   AGE: [
-    { Index: 1, Value: 4 },
-    { Index: 2, Value: 4 },
-    { Index: 3, Value: 3 },
-    { Index: 4, Value: 2 },
-    { Index: 5, Value: 1 },
+    { Index: 1, Value: 4, Average: 25 },
+    { Index: 2, Value: 4, Average: 40 },
+    { Index: 3, Value: 3, Average: 55 },
+    { Index: 4, Value: 2, Average: 63 },
+    { Index: 5, Value: 1, Average: 65 },
   ],
   // 연수입
   INCOME: [
