@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import FormControl from "@mui/material/FormControl";
-import { Box, InputAdornment, Input } from "@mui/material";
+import { Box, Input } from "@mui/material";
 import {
   ComposedChart,
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   CartesianGrid,
-  Area,
   Line,
 } from "recharts";
-import { CompoundContribution, RCompoundContribution } from "../calculate/Calculator";
+import { RCompoundContribution } from "../calculate/Calculator";
 import { ROUNDTWO, MUTUAL, FV, COMPOUND } from "../calculate/Formula";
 
 function Retirement({ Pro, Age }) {
@@ -41,24 +39,35 @@ function Retirement({ Pro, Age }) {
   const handleP = (event) => { getP(parseInt(event.target.value)); };
 
   //Goal 금액 정하기, 수령기간 데이터 만들기
-  const ResceiveYears = [...new Array(ReceivePeriod)].map((_, i) => AccumulatePeriod + i + 1).reverse();
+  let ResceiveYears = [];
+  if (isNaN(ReceivePeriod)) {
+    ResceiveYears = [...new Array(0)]
+      .map((_, i) => AccumulatePeriod + i + 1)
+      .reverse();
+  }
+  else {
+    ResceiveYears = [...new Array(ReceivePeriod)]
+      .map((_, i) => AccumulatePeriod + i + 1)
+      .reverse();
+  }
+
   let SUM = 0;
   const ResceiveData = ResceiveYears.map(function (t) {
     const obj = {
       year: t + "년",
       예상수익: ROUNDTWO(SUM),
     };
-    SUM = SUM + FV(MonthExpense, t);
+    SUM = SUM + FV(MonthExpense*12, t);
     return obj;
   })
   GoalMoney = SUM;
-  console.log("목표 금액:", GoalMoney);
+  // console.log("목표 금액:", GoalMoney);
   //초기투자금액 복리 계산, 총 계산에서 뺴기 -> exceptP
   exceptP = GoalMoney - COMPOUND(P, Pro, AccumulatePeriod);
-  console.log("목표금액-초기투자금액", exceptP);
+  // console.log("목표금액-초기투자금액", exceptP);
   //exceptP와 적립식 GBI로 년적립금 구하기
   PMT = MUTUAL(exceptP, Pro, AccumulatePeriod);
-  console.log("년 적립금액:", PMT);
+  // console.log("년 적립금액:", PMT);
   //적립기간 데이터 만들기
   const AccumulateYears = Array.from(
     { length: parseInt(AccumulatePeriod) + 1 },
@@ -67,13 +76,13 @@ function Retirement({ Pro, Age }) {
   const AccumulateData = AccumulateYears.map(function (t) {
     return RCompoundContribution(P, PMT, t, Pro);
   })
-  console.log("적립 기간 데이터:", AccumulateData);
-  console.log("수령 기간 데이터:", ResceiveData);
+  // console.log("적립 기간 데이터:", AccumulateData);
+  // console.log("수령 기간 데이터:", ResceiveData);
   //그래프 데이터 만들기 (합치기, 소팅)
   const data = [...AccumulateData, ...ResceiveData].sort(function(a, b) {
     return parseInt(a.year) - parseInt(b.year);
   });
-  console.log(data);
+  // console.log(data);
 
   return (
     <div style={{ marginTop: "1rem" }}>
