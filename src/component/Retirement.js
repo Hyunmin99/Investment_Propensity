@@ -19,7 +19,6 @@ function Retirement({ Pro, Age }) {
   const [MonthExpense, getMonthExpense] = useState(180); //월 노후 생활비
   const [P, getP] = useState(0); //초기 투자 금액
 
-  // const [PMT, setPMT] = useState(0); //년 적립 금액
   let PMT = 0; //년 적립 금액
   let GoalMoney = 0; //목표 금액
   let AccumulatePeriod = RetireAge - PresentAge; //적립기간 (현재 ~ 은퇴 전)
@@ -37,34 +36,72 @@ function Retirement({ Pro, Age }) {
   const handleReceivePeriod = (event) => { getReceivePeriod(parseInt(event.target.value)); };  
   const handleMonthExpense = (event) => { getMonthExpense(parseInt(event.target.value)); };
   const handleP = (event) => { getP(parseInt(event.target.value)); };
+  const Formatter = (tickItem) => {
+    let Money = tickItem;
+    const units = ["만원", "억원"];
+    let unitIndex = 0;
+    while (Money >= 10000 && unitIndex < units.length - 1) {
+      unitIndex += 1;
+      Money /= 10000;
+      Money = ROUNDTWO(Money);
+    }
+    return `${Money.toLocaleString()}${units[unitIndex]}`;
+  };
 
   //Goal 금액 정하기, 수령기간 데이터 만들기
-  let ResceiveYears = [];
+  let ReceiveYears = [];
   if (isNaN(ReceivePeriod)) {
-    ResceiveYears = [...new Array(0)]
+    ReceiveYears = [...new Array(0)]
       .map((_, i) => AccumulatePeriod + i + 1)
       .reverse();
   }
   else {
-    ResceiveYears = [...new Array(ReceivePeriod)]
+    ReceiveYears = [...new Array(ReceivePeriod)]
       .map((_, i) => AccumulatePeriod + i + 1)
       .reverse();
   }
 
-  let SUM = 0;
-  const ResceiveData = ResceiveYears.map(function (t) {
+  GoalMoney =
+    (FV(MonthExpense * 12, AccumulatePeriod + 1) * (1.02 ** ReceivePeriod - 1)) /
+    (1.02 - 1);
+  let ReceiveYears2 = [];
+  if (isNaN(ReceivePeriod)) {
+    ReceiveYears2 = [...new Array(0)]
+      .map((_, i) => AccumulatePeriod + i + 1)
+  } else {
+    ReceiveYears2 = [...new Array(ReceivePeriod)]
+      .map((_, i) => AccumulatePeriod + i + 1)
+  }
+  let temp_asset = GoalMoney;
+  let temp_invest = GoalMoney;
+  const ReceiveData2 = ReceiveYears2.map(function (t) {
+    temp_asset = temp_asset - FV(MonthExpense * 12, t);
+    // temp_invest = (temp_invest - FV(MonthExpense * 12, t)) * (Pro / 100 + 1);
+    temp_invest = COMPOUND(temp_invest - FV(MonthExpense * 12, t),Pro,1);
+    console.log(t,temp_asset);
     const obj = {
       year: t + "년",
-      예상수익: ROUNDTWO(SUM),
+      자산: ROUNDTWO(temp_asset),
+      투자시자산: ROUNDTWO(temp_invest),
+    };
+    return obj;
+  })
+  console.log(ReceiveData2);
+  
+  let SUM = 0;
+  const ReceiveData = ReceiveYears.map(function (t) {
+    const obj = {
+      year: t + "년",
+      자산: ROUNDTWO(SUM),
     };
     SUM = SUM + FV(MonthExpense*12, t);
     return obj;
   })
-  GoalMoney = SUM;
-  // console.log("목표 금액:", GoalMoney);
+  console.log(ReceiveData);
+  console.log("한번에 다 더하는 방법",FV(MonthExpense * 12, AccumulatePeriod+1) * (1.02**ReceivePeriod-1)/(1.02-1));
   //초기투자금액 복리 계산, 총 계산에서 뺴기 -> exceptP
   exceptP = GoalMoney - COMPOUND(P, Pro, AccumulatePeriod);
-  // console.log("목표금액-초기투자금액", exceptP);
+  console.log("목표금액-초기투자금액", exceptP);
   //exceptP와 적립식 GBI로 년적립금 구하기
   PMT = MUTUAL(exceptP, Pro, AccumulatePeriod);
   // console.log("년 적립금액:", PMT);
@@ -77,9 +114,9 @@ function Retirement({ Pro, Age }) {
     return RCompoundContribution(P, PMT, t, Pro);
   })
   // console.log("적립 기간 데이터:", AccumulateData);
-  // console.log("수령 기간 데이터:", ResceiveData);
+  // console.log("수령 기간 데이터:", ReceiveData);
   //그래프 데이터 만들기 (합치기, 소팅)
-  const data = [...AccumulateData, ...ResceiveData].sort(function(a, b) {
+  const data = [...AccumulateData, ...ReceiveData2].sort(function(a, b) {
     return parseInt(a.year) - parseInt(b.year);
   });
   // console.log(data);
@@ -132,7 +169,7 @@ function Retirement({ Pro, Age }) {
             />
           </FormControl>
         </Box>
-        <span>년간 </span>
+        <span>년간 매월</span>
         <Box sx={{ display: "flex" }}>
           <FormControl variant="standard">
             <Input
@@ -173,9 +210,18 @@ function Retirement({ Pro, Age }) {
             borderRadius: "0.8rem",
           }}
         >
-          <span style={{ marginTop: "0.8rem" }}>
-            은퇴 목표를 이루기 위해 매년 <b>{ROUNDTWO(PMT)}</b>만원을 넣어야해요!
-          </span>
+          <div style={{ marginTop: "0.8rem" }}>
+            은퇴 목표를 이루기 위해 매년 <b>{ROUNDTWO(PMT)}</b>만원을
+            넣어야해요!
+          </div>
+          <div>
+            은퇴 목표를 이루기 위해 매월 <b>{ROUNDTWO(PMT / 12)}</b>만원을
+            넣어야해요!
+          </div>
+          <div>
+            목표는 <b>{AccumulatePeriod}</b>년간 <b>{ROUNDTWO(GoalMoney)}</b>
+            만원 모으기!!
+          </div>
         </div>
       </div>
 
@@ -187,19 +233,19 @@ function Retirement({ Pro, Age }) {
       >
         <XAxis dataKey="year" tick={{ fontSize: 10 }} padding={{ right: 20 }} />
         <YAxis
-          unit={"만원"}
           tick={{ fontSize: 10 }}
           padding={{ bottom: 10 }}
           domain={["auto", "auto"]}
+          tickFormatter={Formatter}
         />
-        <Tooltip />
+        <Tooltip formatter={Formatter} />
         {/* <Legend tick={{ fontSize: 10 }} /> */}
         <CartesianGrid stroke="#f4f4f4" />
+        <Line type="monotone" dataKey="자산" stroke="#1D1A82" />
         <Line
-          unit={"만원"}
           type="monotone"
-          dataKey="예상수익"
-          stroke="#1D1A82"
+          dataKey="투자시자산"
+          stroke="#FFB950"
         />
       </ComposedChart>
     </div>

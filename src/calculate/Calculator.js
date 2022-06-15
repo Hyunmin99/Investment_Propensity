@@ -53,7 +53,7 @@ export function RCompoundContribution(P, PMT, t, Pro) {
   const PRO_VALUE = COMPOUND(P, Pro, t) + CONTRIBUTE(PMT, Pro, t);
   const obj = {
     year: t + "년",
-    예상수익: ROUNDTWO(PRO_VALUE),
+    자산: ROUNDTWO(PRO_VALUE),
   };
   return obj;
 }

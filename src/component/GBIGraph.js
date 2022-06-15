@@ -34,6 +34,46 @@ function GBIGraph({ Min, Max, Pro }) {
   const handleT = (event) => {
     setT(event.target.value);
   };
+  const formatYAxis = (tickItem) => {
+    let Money = tickItem;
+
+    const units = ["만원", "억원"];
+    let unitIndex = 0;
+
+    while (Money >= 10000 && unitIndex < units.length - 1) {
+      unitIndex += 1;
+      Money /= 10000;
+      Money = ROUNDTWO(Money);
+    }
+    return `${Money.toLocaleString()}${units[unitIndex]}`;
+  };
+  const formatTooltip = (value, name) => {
+    let Money = value;
+    let unitIndex = 0;
+    const units = ["만원", "억원"];
+
+    if (name === "예상수익범위") {
+      const NewValue = value.map((Money) => {
+        while (Money >= 10000 && unitIndex < units.length - 1) {
+          unitIndex += 1;
+          Money /= 10000;
+          Money = ROUNDTWO(Money);
+        }
+        return `${Money.toLocaleString()}${units[unitIndex]}`;
+      })
+      return [
+        `${NewValue[0]} ~ ${NewValue[1]}`,
+        "예상수익범위",
+      ];
+    } else {
+      while (Money >= 10000 && unitIndex < units.length - 1) {
+        unitIndex += 1;
+        Money /= 10000;
+        Money = ROUNDTWO(Money);
+      }
+      return `${Money.toLocaleString()}${units[unitIndex]}`;
+    }
+  };
 
   if (Method === "LumpSum") {
     P = LUMPSUM(T, Pro, Period);
@@ -117,7 +157,7 @@ function GBIGraph({ Min, Max, Pro }) {
             <span style={{ marginTop: "0.8rem" }}>
               매년 <b>{ROUNDTWO(PMT)}</b>만원을 넣어야해요!
             </span>
-        )}
+          )}
         </div>
       </div>
 
@@ -129,29 +169,26 @@ function GBIGraph({ Min, Max, Pro }) {
       >
         <XAxis dataKey="year" tick={{ fontSize: 10 }} padding={{ right: 20 }} />
         <YAxis
-          unit={"만원"}
           tick={{ fontSize: 10 }}
           padding={{ bottom: 10 }}
           domain={["auto", "auto"]}
+          tickFormatter={formatYAxis}
         />
-        <Tooltip />
+        <Tooltip formatter={formatTooltip} />
         <Legend tick={{ fontSize: 10 }} />
         <CartesianGrid stroke="#f4f4f4" />
         <Area
-          unit={"만원"}
           type="monotone"
           dataKey="예상수익범위"
           fill="#FFB950"
           stroke="#FFB950"
         />
         <Line
-          unit={"만원"}
           type="monotone"
           dataKey="예상수익"
           stroke="#1D1A82"
         />
         <Line
-          unit={"만원"}
           type="monotone"
           dataKey="현재가치"
           stroke="#B45CCA"

@@ -337,7 +337,9 @@ function Final_Result(props) {
             ) : graph === 1 ? (
               <GBIGraph Min={MIN} Max={MAX} Pro={PRO} />
             ) : (
-              graph === 2 && <Retirement Pro={PRO} Age={AGE.Average} />
+              graph === 2 && (
+                <Retirement Pro={PRO} Min={MIN} Max={MAX} Age={AGE.Average} />
+              )
             )}
           </div>
         </div>

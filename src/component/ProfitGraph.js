@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import FormControl from "@mui/material/FormControl";
 import { Box, InputAdornment, Input, MenuItem, Select } from "@mui/material";
-
+import { ROUNDTWO } from "../calculate/Formula";
 import {CompoundContribution} from "../calculate/Calculator"
 
 function ProfitGraph({ Min, Max, Pro }) {
@@ -19,30 +19,6 @@ function ProfitGraph({ Min, Max, Pro }) {
   //적립식 복리 : Compound + Contribute
   const Year = [0, 5, 10, 15, 20, 25, 30, 35, 40];
   const Contribution = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]; //적립금액
-
-  // function cov_Money(Money) {
-  //   let scaledValue = Money;
-
-  //   if (scaledValue < 10000) {
-  //     scaledValue = Math.round(scaledValue / 10) * 10;
-  //   }
-
-  //   while (scaledValue >= 10000) {
-  //     scaledValue /= 10000;
-  //   }
-  //   return parseInt(scaledValue);
-  // }
-
-  // function cov_Units(Money) {
-  //   const units = ["만원", "억원"];
-  //   let unitIndex = 0;
-
-  //   while (Money >= 10000 && unitIndex < units.length - 1) {
-  //     unitIndex += 1;
-  //     Money /= 10000;
-  //   }
-  //   return units[unitIndex];
-  // }
 
   const [Period, getPeriod] = useState(15);
   const [P, setP] = useState(150);
@@ -67,13 +43,46 @@ function ProfitGraph({ Min, Max, Pro }) {
 
   const P_handlChange = (event) => {
     setP(event.target.value);
-    // covMoney = cov_Money(P);
-    // covUnits = cov_Units(P);
+  };
+  const formatYAxis = (tickItem) => {
+    let Money = tickItem;
+
+    const units = ["만원", "억원"];
+    let unitIndex = 0;
+
+    while (Money >= 10000 && unitIndex < units.length - 1) {
+      unitIndex += 1;
+      Money /= 10000;
+    }
+    return `${Money.toLocaleString()}${units[unitIndex]}`;
+  };
+  const formatTooltip = (value, name) => {
+    let Money = value;
+    let unitIndex = 0;
+    const units = ["만원", "억원"];
+
+    if (name === "예상수익범위") {
+      const NewValue = value.map((Money) => {
+        while (Money >= 10000 && unitIndex < units.length - 1) {
+          unitIndex += 1;
+          Money /= 10000;
+          Money = ROUNDTWO(Money);
+        }
+        return `${Money.toLocaleString()}${units[unitIndex]}`;
+      });
+      return [`${NewValue[0]} ~ ${NewValue[1]}`, "예상수익범위"];
+    } else {
+      while (Money >= 10000 && unitIndex < units.length - 1) {
+        unitIndex += 1;
+        Money /= 10000;
+        Money = ROUNDTWO(Money);
+      }
+      return `${Money.toLocaleString()}${units[unitIndex]}`;
+    }
   };
 
   return (
     <div style={{ marginTop: "1rem" }}>
-      {/* <div style={{ marginTop: "1rem" }}> */}
       <h3 style={{ margin: "0.3rem 0" }}>📈 예상 수익률 그래프</h3>
       <div className="Description">
         <span>초기 투자 금액: </span>
@@ -100,33 +109,26 @@ function ProfitGraph({ Min, Max, Pro }) {
       >
         <XAxis dataKey="year" tick={{ fontSize: 10 }} padding={{ right: 20 }} />
         <YAxis
-          // unit={covUnits}
-          unit="만원"
           domain={["auto", "auto"]}
           tick={{ fontSize: 10 }}
           padding={{ bottom: 10 }}
+          tickFormatter={formatYAxis}
         />
-        <Tooltip />
+        <Tooltip formatter={formatTooltip} />
         <Legend tick={{ fontSize: 10 }} />
         <CartesianGrid stroke="#f4f4f4" />
         <Area
-          // unit={covUnits}
-          unit="만원"
           type="monotone"
           dataKey="예상수익범위"
           fill="#FFB950"
           stroke="#FFB950"
         />
         <Line
-          // unit={covUnits}
-          unit="만원"
           type="monotone"
           dataKey="예상수익"
           stroke="#1D1A82"
         />
         <Line
-          // unit={covUnits}
-          unit="만원"
           type="monotone"
           dataKey="현재가치"
           stroke="#B45CCA"
