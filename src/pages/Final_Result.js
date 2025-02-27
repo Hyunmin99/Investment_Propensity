@@ -195,7 +195,7 @@ function Final_Result(props) {
       <Header history={props.history} />
       <div className="Result">
         <div>
-          <div>
+          <div style={{marginTop : "2rem"}}>
             <div className="Quest">
               <div
                 style={{
@@ -208,13 +208,11 @@ function Final_Result(props) {
               </div>
               <div>{PERIOD.Quest}</div>
             </div>
-            {/* <img className='TypeImage'></img> */}
-            {/* <div className="TypeImage"></div> */}
             <h1
               style={{
                 color: "#fefefe",
                 fontFamily: "DungGeunMo",
-                padding: "0.5rem",
+                padding: "0.3rem",
               }}
             >
               {Type.Char}
