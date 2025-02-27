@@ -379,7 +379,7 @@ body{
     font-size: 0.75rem;
   }
   .Quest {
-    left: -2rem;
+    /* left: ; */
     width: auto;
   }
   .TypeImage {

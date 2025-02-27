@@ -106,7 +106,7 @@ function First_Result(props) {
               <div>{PERIOD.Quest}</div>
             </div>
             {/* <img className='TypeImage'></img> */}
-            <div className="TypeImage"></div>
+            {/* <div className="TypeImage"></div> */}
             <h1
               style={{
                 color: "#fefefe",
